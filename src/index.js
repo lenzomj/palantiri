@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import { startWebsocketConnection } from './websocket';
+import { startWebsocketConnection } from './lib/WebSocket';
 
 ReactDOM.render(
   <React.StrictMode>

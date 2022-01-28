@@ -7,10 +7,7 @@
 // then the host is the current browser host
 const host = process.env.NODE_ENV === 'production' ? window.location.host : 'localhost:8080'
 
-// We create an exported variable `send`, that we will assign
-// later (just know that it is exported for now)
-export let send
-
+let send
 let onMessageCallbacks = [ ];
 
 export const startWebsocketConnection = () => {
@@ -29,6 +26,29 @@ export const startWebsocketConnection = () => {
   }
 
   send = ws.send.bind(ws)
+}
+
+export const wsSendMessage = (source, text) => {
+  const regexpMessage = /\/([a-z]+) (.*)/i;
+  const msgMatch = text.match(regexpMessage);
+
+  let msgType = "message";
+  let msgAction = undefined;
+  let msgBody = text;
+
+  if (msgMatch) {
+    msgType = "action";
+    msgAction = msgMatch[1].toLowerCase();
+    msgBody = msgMatch[2];
+  }
+
+  const message = {
+    source:  source,
+    type:    msgType,
+    action:  msgAction,
+    body:    msgBody
+  };
+  send(JSON.stringify(message));
 }
 
 export const registerOnMessageCallback = (fn) => {

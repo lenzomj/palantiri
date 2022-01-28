@@ -1,21 +1,69 @@
 import React from 'react';
 import styled from "styled-components";
 
-import Menu from './components/Menu';
+import NaviBox from './components/NaviBox';
 import PlayBox from './components/PlayBox';
 import InfoBox from './components/InfoBox';
 import ChatBox from './components/ChatBox';
 
-export class App extends React.Component {
+import { registerOnMessageCallback } from './lib/WebSocket';
+import GameState from './lib/GameState';
+
+export default class App extends React.Component {
 
   constructor (props) {
     super(props)
+    this.state = { playerState: {
+                     name: "Observer",
+                     seat: "Watching" },
+                   gameState: GameState
+                 };
+  }
+
+  componentDidMount () {
+    registerOnMessageCallback(this.onMessageReceived.bind(this));
+  }
+
+  onMessageReceived (message) {
+    message = JSON.parse(message);
+    if (message.type == "action") {
+      switch(message.action) {
+        case "name":
+          this.setState({
+            playerState: {
+              ...this.state.playerState,
+              name: message.body
+            }
+          });
+          break;
+        case "seat":
+          this.setState({
+            playerState: {
+              ...this.state.playerState,
+              seat: message.body
+            }
+          });
+          break;
+        case "scenario":
+          this.setState({
+            gameState: {
+              ...this.state.gameState,
+              scenario: message.body
+            }
+          });
+          break;
+      }
+    }
   }
 
   render () {
     return (
       <Layout>
-        <MenuPane> <Menu    /> </MenuPane>
+        <NaviPane>
+          <NaviBox playerState={this.state.playerState}
+                   gameState={this.state.gameState}
+          />
+        </NaviPane>
         <PlayPane> <PlayBox /> </PlayPane>
         <InfoPane> <InfoBox /> </InfoPane>
         <ChatPane> <ChatBox /> </ChatPane>
@@ -24,21 +72,21 @@ export class App extends React.Component {
   }
 }
 
-/* Style */
+/* Component Style */
 
 const Layout = styled.div`
   display: grid;
   width: 100%;
   grid-template-areas:
-    "menu menu menu"
+    "navi navi navi"
     "play play info"
     "play play chat";
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 50px 1fr;
 `;
 
-const MenuPane = styled.div`
-  grid-area: menu;
+const NaviPane = styled.div`
+  grid-area: navi;
   border-bottom: 1px solid white;
 `;
 
@@ -54,5 +102,3 @@ const InfoPane = styled.div`
 const ChatPane = styled.div`
   grid-area: chat;
 `;
-
-export default App

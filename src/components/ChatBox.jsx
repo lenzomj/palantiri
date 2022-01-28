@@ -4,7 +4,7 @@ import './ChatBox.css';
 import MessageWindow from './MessageWindow';
 import TextBar from './TextBar';
 
-import { registerOnMessageCallback, send } from '../websocket';
+import { registerOnMessageCallback } from '../lib/WebSocket';
 
 export class ChatBox extends React.Component {
   // The messages and username are used as the application state
@@ -19,6 +19,9 @@ export class ChatBox extends React.Component {
     // with the imported `registerOnMessageCallback`
     // Everytime a new message is received, `onMessageReceived` will
     // get called
+  }
+
+  componentDidMount () {
     registerOnMessageCallback(this.onMessageReceived.bind(this))
   }
 
@@ -39,34 +42,21 @@ export class ChatBox extends React.Component {
     })
   }
 
-  // This method accepts the message text
-  // It then constructs the message object, stringifies it
-  // and sends the string to the server using the `send` function
-  // imported from the websockets package
-  sendMessage (text) {
-    const message = {
-      username: this.state.username,
-      text: text
-    }
-    send(JSON.stringify(message))
-  }
-
   render () {
     // Create functions by binding the methods to the instance
     const setUserName = this.setUserName.bind(this)
-    const sendMessage = this.sendMessage.bind(this)
 
     // If the username isn't set yet, we display just the textbar
     // along with a hint to set your username. Once the text is entered
     // the `setUsername` method adds the username to the state
-    if (this.state.username === null) {
+    /*if (this.state.username === null) {
       return (
         <div className='container'>
           <div className='container-title'>Enter username</div>
           <TextBar onSend={setUserName} />
         </div>
       )
-    }
+    }*/
 
     // If the username is already set, we display the message window with
     // the text bar under it. The `messages` prop is set as the states current list of messages
@@ -76,7 +66,6 @@ export class ChatBox extends React.Component {
       <div className='container'>
         <div className='container-title'>Messages</div>
         <MessageWindow messages={this.state.messages} username={this.state.username} />
-        <TextBar onSend={sendMessage} />
       </div>
     )
   }

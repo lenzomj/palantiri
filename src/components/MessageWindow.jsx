@@ -34,7 +34,7 @@ export default class MessageWindow extends React.Component {
     return (
       <div className='message-window' ref={this.messageWindow}>
         {messages.map((msg, i) => {
-          return <Message key={i} text={msg.text} username={msg.username} self={username === msg.username} />
+          return <Message key={i} text={msg.body} username={msg.source} self={username === msg.username} />
         })}
       </div>
     )
