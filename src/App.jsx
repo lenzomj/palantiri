@@ -24,6 +24,8 @@ export class App extends React.Component {
   }
 }
 
+/* Style */
+
 const Layout = styled.div`
   display: grid;
   width: 100%;
