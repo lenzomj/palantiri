@@ -7,16 +7,14 @@ import InfoBox from './components/InfoBox';
 import ChatBox from './components/ChatBox';
 
 import { registerOnMessageCallback } from './lib/WebSocket';
-import GameState from './lib/GameState';
+import { GameState } from './lib/Game';
 
 export default class App extends React.Component {
 
   constructor (props) {
     super(props)
-    this.state = { playerState: {
-                     name: "Observer",
-                     seat: "Watching" },
-                   gameState: GameState
+    this.state = { playerID: undefined,
+                   gameState: GameState.Default
                  };
   }
 
@@ -26,30 +24,17 @@ export default class App extends React.Component {
 
   onMessageReceived (message) {
     message = JSON.parse(message);
-    if (message.type == "action") {
-      switch(message.action) {
-        case "name":
+    if (message.kind == "action") {
+      switch(message.head) {
+        case "playerid":
+          console.log(`Received playerid ${message.body}`);
           this.setState({
-            playerState: {
-              ...this.state.playerState,
-              name: message.body
-            }
+            playerID: message.body
           });
           break;
-        case "seat":
+       case "state":
           this.setState({
-            playerState: {
-              ...this.state.playerState,
-              seat: message.body
-            }
-          });
-          break;
-        case "scenario":
-          this.setState({
-            gameState: {
-              ...this.state.gameState,
-              scenario: message.body
-            }
+            gameState: JSON.parse(message.body, GameState.Reviver)
           });
           break;
       }
@@ -60,7 +45,7 @@ export default class App extends React.Component {
     return (
       <Layout>
         <NaviPane>
-          <NaviBox playerState={this.state.playerState}
+          <NaviBox playerID={this.state.playerID}
                    gameState={this.state.gameState}
           />
         </NaviPane>

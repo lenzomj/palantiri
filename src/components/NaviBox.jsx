@@ -11,21 +11,23 @@ export default class NaviBox extends Component {
   }
 
   sendMessage (text) {
-    /*const message = {
-      source: this.props.playerState.name,
-      message: text
-    };*/
-    wsSendMessage(this.props.playerState.name, text);
+    wsSendMessage(this.props.playerID, text);
   }
 
   render () {
-    const sendMessage= this.sendMessage.bind(this);
+    const sendMessage = this.sendMessage.bind(this);
+
+    let player = "Observer";
+    if (this.props.gameState.players.has(this.props.playerID)) {
+      console.log(this.props.gameState.players.get(this.props.playerID));
+      player = this.props.gameState.players.get(this.props.playerID);
+    }
 
     return (
       <Layout>
         <FirstItem><p>Palantir</p></FirstItem>
-        <Item><p>Name: {this.props.playerState.name}</p></Item>
-        <Item><p>Seat: {this.props.playerState.seat}</p></Item>
+        <Item><p>Players: {this.props.gameState.players.size}</p></Item>
+        <Item><p>{player}</p></Item>
         <Item><p>Scenario: {this.props.gameState.scenario}</p></Item>
         <LastItem><Console onSend={sendMessage} /> </LastItem>
       </Layout>
@@ -60,6 +62,3 @@ const LastItem = styled.div`
   padding-left: 1rem;
   text-align: center;
 `;
-
-
-
