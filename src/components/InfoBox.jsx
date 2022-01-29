@@ -10,7 +10,7 @@ export default class InfoBox extends Component {
   render () {
     return (
     <Layout>
-      <Preview src="images/player_cardback.jpg" />
+      <Preview src={this.props.appState.playerView} />
     </Layout>
     );
   }

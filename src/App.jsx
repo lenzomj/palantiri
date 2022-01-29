@@ -15,6 +15,7 @@ export default class App extends React.Component {
     super(props)
     this.state = { playerID: undefined,
                    playerName: "Observer",
+                   playerView: "",
                    gameState: GameState.Default
                  };
   }
@@ -24,7 +25,9 @@ export default class App extends React.Component {
   }
 
   onCardSelected (event) {
-    console.log(event);
+    this.setState({
+      playerView: event.target.src
+    });
   }
 
   onMessageReceived (message) {
@@ -50,7 +53,7 @@ export default class App extends React.Component {
   }
 
   render () {
-    const onSelect = this.onCardSelected.bind(this);
+    const onCardSelected = this.onCardSelected.bind(this);
 
     return (
       <Layout>
@@ -58,7 +61,7 @@ export default class App extends React.Component {
           <NaviBox appState={this.state} />
         </NaviPane>
         <PlayPane>
-          <PlayBox appState={this.state} onSelect={onSelect} />
+          <PlayBox appState={this.state} onCardSelected={onCardSelected} />
         </PlayPane>
         <InfoPane>
           <InfoBox appState={this.state} />

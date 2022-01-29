@@ -5,12 +5,27 @@ import { v4 as uuidv4 } from 'uuid';
 import Game from './lib/Game.mjs';
 import { MessageTemplate } from './lib/WebSocket.mjs';
 
+import fs from 'fs';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+const loadCardLibrary = (filePath) => {
+  let cardLibrary;
+  let jsonLibrary = fs.readFileSync(filePath);
+  return JSON.parse(jsonLibrary);
+}
+
+const libraryPath = path.join(__dirname, '/data/cards.json');
+
+
 const WSPORT = 8080;
-
 const app = new Express();
-const clients = new Set();
 
-const game = new Game();
+const clients = new Set();
+const game = new Game(loadCardLibrary(libraryPath));
 
 /*
  * Define a WebSocket handler and add it to the /chat route.
@@ -35,6 +50,10 @@ const wsHandler = (ws) => {
           break;
         case "join":
           game.join(clientID, call.body);
+          stateChanged = true;
+          break;
+        case "reveal":
+          game.reveal(call.body);
           stateChanged = true;
           break;
       }
