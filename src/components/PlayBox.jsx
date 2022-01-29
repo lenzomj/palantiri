@@ -1,16 +1,45 @@
-import React from 'react';
+import React, { Component } from 'react';
+import styled from "styled-components";
 
-export class PlayBox extends React.Component {
+export default class PlayBox extends Component {
 
   constructor (props) {
-    super(props)
+    super(props);
   }
 
   render () {
     return (
-      <p>Play Box</p>
+      <Layout>
+        <Quest src="images/player_cardback.jpg" />
+        <Encounter src="images/player_cardback.jpg" />
+        <Encounter src="images/player_cardback.jpg" />
+      </Layout>
     );
   }
 }
 
-export default PlayBox
+const Layout = styled.div`
+  display: flex;
+`;
+
+const Encounter = styled.img`
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 2px solid white;
+  border-radius: 8px;
+  width: 100px;
+`;
+
+const Quest = styled.img`
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 2px solid white;
+  border-radius: 8px;
+  width: 100px;
+`;

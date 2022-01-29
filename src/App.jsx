@@ -23,6 +23,10 @@ export default class App extends React.Component {
     registerOnMessageCallback(this.onMessageReceived.bind(this));
   }
 
+  onCardSelected (event) {
+    console.log(event);
+  }
+
   onMessageReceived (message) {
     message = JSON.parse(message);
     if (message.kind == "action") {
@@ -46,14 +50,21 @@ export default class App extends React.Component {
   }
 
   render () {
+    const onSelect = this.onCardSelected.bind(this);
+
     return (
       <Layout>
-        <NaviPane> <NaviBox appState={this.state} /> </NaviPane>
-        <PlayPane> <PlayBox /> </PlayPane>
-        <InfoPane> <InfoBox /> </InfoPane>
+        <NaviPane>
+          <NaviBox appState={this.state} />
+        </NaviPane>
+        <PlayPane>
+          <PlayBox appState={this.state} onSelect={onSelect} />
+        </PlayPane>
+        <InfoPane>
+          <InfoBox appState={this.state} />
+        </InfoPane>
         <ChatPane>
-          <ChatBox playerID={this.state.playerID}
-                   playerName={this.state.playerName} />
+          <ChatBox appState={this.state} />
         </ChatPane>
       </Layout>
     );

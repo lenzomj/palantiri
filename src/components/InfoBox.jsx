@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from "styled-components";
 
-export default class InfoBox extends React.Component {
+export default class InfoBox extends Component {
 
   constructor (props) {
     super(props);
