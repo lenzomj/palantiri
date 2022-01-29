@@ -14,6 +14,7 @@ export default class App extends React.Component {
   constructor (props) {
     super(props)
     this.state = { playerID: undefined,
+                   playerName: "Observer",
                    gameState: GameState.Default
                  };
   }
@@ -33,8 +34,11 @@ export default class App extends React.Component {
           });
           break;
        case "state":
+          let newState = JSON.parse(message.body, GameState.Reviver);
+          let playerName = newState.players.get(this.state.playerID) || "Observer";
           this.setState({
-            gameState: JSON.parse(message.body, GameState.Reviver)
+            playerName: playerName,
+            gameState: newState
           });
           break;
       }
@@ -44,14 +48,13 @@ export default class App extends React.Component {
   render () {
     return (
       <Layout>
-        <NaviPane>
-          <NaviBox playerID={this.state.playerID}
-                   gameState={this.state.gameState}
-          />
-        </NaviPane>
+        <NaviPane> <NaviBox appState={this.state} /> </NaviPane>
         <PlayPane> <PlayBox /> </PlayPane>
         <InfoPane> <InfoBox /> </InfoPane>
-        <ChatPane> <ChatBox /> </ChatPane>
+        <ChatPane>
+          <ChatBox playerID={this.state.playerID}
+                   playerName={this.state.playerName} />
+        </ChatPane>
       </Layout>
     );
   }

@@ -11,24 +11,18 @@ export default class NaviBox extends Component {
   }
 
   sendMessage (text) {
-    wsSendMessage(this.props.playerID, text);
+    wsSendMessage(this.props.appState.playerID, text);
   }
 
   render () {
     const sendMessage = this.sendMessage.bind(this);
 
-    let player = "Observer";
-    if (this.props.gameState.players.has(this.props.playerID)) {
-      console.log(this.props.gameState.players.get(this.props.playerID));
-      player = this.props.gameState.players.get(this.props.playerID);
-    }
-
     return (
       <Layout>
         <FirstItem><p>Palantir</p></FirstItem>
-        <Item><p>Players: {this.props.gameState.players.size}</p></Item>
-        <Item><p>{player}</p></Item>
-        <Item><p>Scenario: {this.props.gameState.scenario}</p></Item>
+        <Item><p>Players: {this.props.appState.gameState.players.size}</p></Item>
+        <Item><p>{this.props.appState.playerName}</p></Item>
+        <Item><p>Scenario: {this.props.appState.gameState.scenario}</p></Item>
         <LastItem><Console onSend={sendMessage} /> </LastItem>
       </Layout>
     );
