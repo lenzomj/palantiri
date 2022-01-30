@@ -108,7 +108,6 @@ export default class Game {
   reveal(cardName) {
     let revealed = this.findCardByName(cardName);
     if (revealed) {
-      console.log(`Revealed ${cardName}`);
       this.state.stagingArea.push(revealed);
     }
   }
@@ -116,13 +115,21 @@ export default class Game {
   quest(cardName) {
     let quest = this.findCardByName(cardName);
     if (quest) {
-      console.log(`Set active quest to ${cardName}`);
       this.state.activeQuest = quest;
     }
   }
 
-  travel(stagingKey) {
-    console.log(`Traveling to ${stagingKey}`);
+  travel(stagingIndex) {
+    let oldActiveLocation = this.state.activeLocation;
+    let newActiveLocation = this.state.stagingArea[stagingIndex];
+
+    if (!newActiveLocation) {
+      return;
+    } else if (oldActiveLocation) {
+      this.state.stagingArea.push(oldActiveLocation);
+    }
+    this.state.activeLocation = newActiveLocation;
+    this.state.stagingArea.splice(stagingIndex, 1);
   }
 
   clearStagingArea() {

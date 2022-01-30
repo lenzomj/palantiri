@@ -59,6 +59,9 @@ const wsHandler = (ws) => {
         case "quest":
           game.quest(call.body);
           stateChanged = true;
+        case "travel":
+          game.travel(call.body);
+          stateChanged = true;
       }
       if (stateChanged) {
         wsBroadcastGameState();
