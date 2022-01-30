@@ -44,24 +44,46 @@ const wsHandler = (ws) => {
 
     if (call.kind == "action") {
       switch(call.head) {
+        case "join":
+          game.join(clientID, call.body);
+          stateChanged = true;
+          break;
         case "scenario":
           game.select(call.body);
           stateChanged = true;
           break;
-        case "join":
-          game.join(clientID, call.body);
+        case "quest":
+          game.quest(call.body);
           stateChanged = true;
           break;
         case "reveal":
           game.reveal(call.body);
           stateChanged = true;
           break;
-        case "quest":
-          game.quest(call.body);
+        case "discard":
+          game.discard(call.body);
           stateChanged = true;
+          break;
+        case "engage":
+          game.engage(call.body);
+          stateChanged = true;
+          break;
         case "travel":
           game.travel(call.body);
           stateChanged = true;
+          break;
+        case "explore":
+          game.explore();
+          stateChanged = true;
+          break;
+        case "defeat":
+          game.defeat(call.body);
+          stateChanged = true;
+          break;
+        case "return":
+          game.return(call.body);
+          stateChanged = true;
+          break;
       }
       if (stateChanged) {
         wsBroadcastGameState();

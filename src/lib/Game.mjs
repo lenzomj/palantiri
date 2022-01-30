@@ -112,10 +112,18 @@ export default class Game {
     }
   }
 
+  discard(stagingIndex) {
+    let staged = this.state.stagingArea[stagingIndex];
+
+    if (staged) {
+      this.state.stagingArea.splice(stagingIndex, 1);
+    }
+  }
+
   quest(cardName) {
-    let quest = this.findCardByName(cardName);
-    if (quest) {
-      this.state.activeQuest = quest;
+    let found = this.findCardByName(cardName);
+    if (found) {
+      this.state.activeQuest = found;
     }
   }
 
@@ -132,8 +140,44 @@ export default class Game {
     this.state.stagingArea.splice(stagingIndex, 1);
   }
 
+  explore() {
+    if (this.state.activeLocation) {
+      this.state.activeLocation = undefined;
+    }
+  }
+
+  engage(stagingIndex) {
+    let staged = this.state.stagingArea[stagingIndex];
+
+    if (staged) {
+      this.state.stagingArea.splice(stagingIndex, 1);
+      this.state.engagementArea.push(staged);
+    }
+  }
+
+  return(engagementIndex) {
+    let engaged = this.state.engagementArea[engagementIndex];
+
+    if (engaged) {
+      this.state.engagementArea.splice(engagementIndex, 1);
+      this.state.stagingArea.push(engaged);
+    }
+  }
+
+  defeat(engagementIndex) {
+    let engaged = this.state.engagementArea[engagementIndex];
+
+    if (engaged) {
+      this.state.engagementArea.splice(engagementIndex, 1);
+    }
+  }
+
   clearStagingArea() {
     this.state.stagingArea = [ ];
+  }
+
+  clearEngagementArea() {
+    this.state.engagementArea = [ ];
   }
 
   getStateAsJSON () {
