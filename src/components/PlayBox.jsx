@@ -10,11 +10,9 @@ export default class PlayBox extends Component {
   }
 
   render () {
-    const activeQuest = this.props.appState.gameState.activeQuest;
-    const activeLocation = this.props.appState.gameState.activeLocation;
-    const stagingArea = this.props.appState.gameState.stagingArea;
-    const engagementArea = this.props.appState.gameState.engagementArea;
-    const scenarioDeck = this.props.appState.gameState.scenarioDeck;
+    const {activeQuest, activeLocation,
+           stagingArea, engagementArea,
+           scenarioDeck } = this.props.appState.gameState;
 
     return (
       <Layout>
@@ -93,6 +91,8 @@ const EngagementArea = styled.div`
   grid-area: engage;
   display: flex;
   flex-wrap: wrap;
+  border-top: 1px dotted rgba(255,255,255,0.4);
+
 `;
 
 const Card = styled.img`
@@ -102,7 +102,7 @@ const Card = styled.img`
   margin-right: auto;
   margin-top: 1rem;
   margin-bottom: 1rem;
-  width: 75px;
+  width: 85px;
   height: auto;
   transition: transform .2s;
 

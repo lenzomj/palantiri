@@ -1,12 +1,4 @@
-export const Scenarios = {
-  "Passage Through Mirkwood": ["Passage Through Mirkwood",
-                               "Spiders of Mirkwood",
-                               "Dol Guldur Orcs"],
-
-  "The Hunt for Gollum":      ["The Hunt for Gollum",
-                               "Journey Down the Anduin",
-                               "Sauron's Reach"],
-};
+import { Scenarios } from './Scenarios.mjs';
 
 export const DefaultScenario = "Passage Through Mirkwood";
 
@@ -183,5 +175,4 @@ export default class Game {
   getStateAsJSON () {
     return JSON.stringify(this.state, GameState.Replacer);
   }
-
 }
