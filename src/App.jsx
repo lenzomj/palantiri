@@ -25,6 +25,7 @@ export default class App extends React.Component {
   }
 
   onCardSelected (event) {
+    //console.log(event.target.getAttribute("data-uuid"));
     this.setState({
       playerView: event.target.src
     });
@@ -40,7 +41,7 @@ export default class App extends React.Component {
             playerID: message.body
           });
           break;
-       case "state":
+        case "state":
           let newState = JSON.parse(message.body, GameState.Reviver);
           let playerName = newState.players.get(this.state.playerID) || "Observer";
           this.setState({
@@ -78,23 +79,24 @@ export default class App extends React.Component {
 
 const Layout = styled.div`
   display: grid;
-  width: 100%;
   grid-template-areas:
     "navi navi navi"
     "play play info"
     "play play chat";
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 50px 1fr;
+  height: 100vh;
+  width: 100vw;
 `;
 
 const NaviPane = styled.div`
   grid-area: navi;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid rgba(255,255,255,0.4);
 `;
 
 const PlayPane = styled.div`
   grid-area: play;
-  border-right: 1px solid white;
+  border-right: 1px solid rgba(255,255,255,0.4);
 `;
 
 const InfoPane = styled.div`

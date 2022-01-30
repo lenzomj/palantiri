@@ -38,14 +38,14 @@ const Layout = styled.div`
 const FirstItem = styled.div`
   color: white;
   font-weight: bold;
-  border-right: 1px solid white;
+  border-right: 1px solid rgba(255,255,255,0.4);
   padding-right: 1rem;
   text-align: center;
 `;
 
 const Item = styled.div`
   color: white;
-  border-right: 1px solid white;
+  border-right: 1px solid rgba(255,255,255,0.4);
   padding-right: 1rem;
   padding-left: 1rem;
   text-align: center;

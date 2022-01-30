@@ -56,6 +56,9 @@ const wsHandler = (ws) => {
           game.reveal(call.body);
           stateChanged = true;
           break;
+        case "quest":
+          game.quest(call.body);
+          stateChanged = true;
       }
       if (stateChanged) {
         wsBroadcastGameState();

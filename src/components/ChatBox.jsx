@@ -1,12 +1,11 @@
-import React from 'react';
-import './ChatBox.css';
+import React, { Component } from 'react';
+import styled from "styled-components";
 
 import MessageWindow from './MessageWindow';
-import TextBar from './TextBar';
 
 import { registerOnMessageCallback } from '../lib/WebSocket';
 
-export default class ChatBox extends React.Component {
+export default class ChatBox extends Component {
   state = {
     messages: [],
   }
@@ -20,20 +19,29 @@ export default class ChatBox extends React.Component {
   }
 
   onMessageReceived (msg) {
-    msg = JSON.parse(msg)
+    msg = JSON.parse(msg);
     if ( msg.kind != "action") {
       this.setState({
-        messages: this.state.messages.concat(msg)
+        messages: this.state.messages.concat(msg),
       });
     }
   }
 
   render () {
     return (
-      <div className='container'>
-        <div className='container-title'>Messages</div>
-        <MessageWindow messages={this.state.messages} username={this.props.playerID} />
-      </div>
+      <Layout>
+        <MessageWindow messages={this.state.messages}
+                       playerID={this.props.appState.playerID}
+                       playerName={this.props.appState.playerName} />
+      </Layout>
     );
   }
 }
+
+const Layout = styled.div`
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin: auto;
+`;

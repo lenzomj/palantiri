@@ -6,9 +6,9 @@ import './MessageWindow.css'
 // The message component takes the message text and the username of the message
 // sender. It also takes `self` - a boolean value depicting whether the message
 // is sent by the current logged in user
-const Message = ({ text, username, self }) => (
+const Message = ({ text, playerID, playerName, self }) => (
   <div className={'message' + (self ? ' message-self' : '')}>
-    <div className='message-username'>{username}</div>
+    <div className='message-username'>{playerName}</div>
     <div className='message-text'>{text}</div>
   </div>
 )
@@ -28,13 +28,13 @@ export default class MessageWindow extends React.Component {
     messageWindow.scrollTop = messageWindow.scrollHeight - messageWindow.clientHeight
   }
   render () {
-    const { messages = [], username } = this.props
+    const { messages = [], playerID, playerName } = this.props
     // The message window is a container for the list of messages, which
     // as mapped to `Message` components
     return (
       <div className='message-window' ref={this.messageWindow}>
         {messages.map((msg, i) => {
-          return <Message key={i} text={msg.body} username={msg.from} self={username === msg.from} />
+          return <Message key={i} text={msg.body} playerID={msg.from} playerName={playerName} self={playerID === msg.from} />
         })}
       </div>
     )

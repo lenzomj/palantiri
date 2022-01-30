@@ -42,16 +42,16 @@ export class GameState {
     this.activeQuest = undefined;
     this.activeLocation = undefined;
     this.stagingArea = new Array();
-    this.encounterArea = new Map();
+    this.engagementArea = new Array();
     this.attachments = new Map();
   }
 };
 
-export const getCardBackSrc = (cardID, scenarioDeck) => {
+export const getCardFrontSrc = (uuid, scenarioDeck) => {
   let src;
-  if (scenarioDeck.has(cardID)) {
-    let card = scenarioDeck.get(cardID);
-    src = `images/cards/${card.cardsetid}/Cards/${cardID}.jpg`
+  if (scenarioDeck.has(uuid)) {
+    let card = scenarioDeck.get(uuid);
+    src = `images/cards/${card.cardsetid}/Cards/${uuid}.jpg`
   }
   return src;
 }
@@ -62,6 +62,7 @@ export default class Game {
     this.cards = cardLibrary;
     this.state = GameState.Default;
     this.select(DefaultScenario);
+    this.quest("Flies and Spiders");
   }
 
   select(scenarioName) {
@@ -70,11 +71,11 @@ export default class Game {
     }
     this.state.scenarioDeck = new Map();
     const encounterSetNames = Scenarios[scenarioName];
-    for (let [index, card] of Object.entries(this.cards)) {
+    for (let [uuid, card] of Object.entries(this.cards)) {
       const cardType = card.sides.A.type;
       const cardSet = card.cardencounterset;
       if (encounterSetNames.includes(cardSet)) {
-        this.state.scenarioDeck.set(index, card);
+        this.state.scenarioDeck.set(uuid, card);
       }
     }
     this.state.scenario = scenarioName;
@@ -94,17 +95,34 @@ export default class Game {
     }
   }
 
-  reveal(cardName) {
-    let cardIndex;
-    this.state.scenarioDeck.forEach((card, index) => {
-      if (card.sides.A.name === cardName) {
-        cardIndex = index;
+  findCardByName(cardName) {
+    let revealed;
+    this.state.scenarioDeck.forEach((card, uuid) => {
+      if (card.sides.A.name.toLowerCase() === cardName.toLowerCase()) {
+        revealed = uuid;
       }
     });
-    if (cardIndex) {
-      console.log(`Revealed ${cardIndex} => ${cardName}`);
-      this.state.stagingArea.push(cardIndex);
+    return revealed;
+  }
+
+  reveal(cardName) {
+    let revealed = this.findCardByName(cardName);
+    if (revealed) {
+      console.log(`Revealed ${cardName}`);
+      this.state.stagingArea.push(revealed);
     }
+  }
+
+  quest(cardName) {
+    let quest = this.findCardByName(cardName);
+    if (quest) {
+      console.log(`Set active quest to ${cardName}`);
+      this.state.activeQuest = quest;
+    }
+  }
+
+  travel(stagingKey) {
+    console.log(`Traveling to ${stagingKey}`);
   }
 
   clearStagingArea() {
