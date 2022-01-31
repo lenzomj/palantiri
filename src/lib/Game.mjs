@@ -43,7 +43,7 @@ export const getCardFrontSrc = (uuid, scenarioDeck) => {
   let src;
   if (scenarioDeck.has(uuid)) {
     let card = scenarioDeck.get(uuid);
-    src = `images/cards/${card.cardsetid}/Cards/${uuid}.jpg`
+    src = `https://palantiri.s3.amazonaws.com/images/cards/${card.cardsetid}/Cards/${uuid}.jpg`
   }
   return src;
 }
