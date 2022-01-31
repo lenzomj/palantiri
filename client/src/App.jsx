@@ -7,7 +7,7 @@ import InfoBox from './components/InfoBox';
 import ChatBox from './components/ChatBox';
 
 import { registerOnMessageCallback } from './lib/WebSocket';
-import { GameState } from './lib/Game';
+import { GameState } from 'shared/Game';
 
 export default class App extends React.Component {
 

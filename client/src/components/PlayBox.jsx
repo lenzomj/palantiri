@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from "styled-components";
 
-import {getCardFrontSrc} from '../lib/Game.mjs'
+import {getCardFrontSrc} from 'shared/Game.mjs'
 
 export default class PlayBox extends Component {
 

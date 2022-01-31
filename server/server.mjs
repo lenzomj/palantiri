@@ -2,8 +2,8 @@ import Express from 'express';
 import expressWs from 'express-ws';
 import { v4 as uuidv4 } from 'uuid';
 
-import Game from './lib/Game.mjs';
-import { MessageTemplate } from './lib/WebSocket.mjs';
+import Game from 'shared/Game.mjs';
+import { MessageTemplate } from '../client/src/lib/WebSocket.mjs';
 
 import fs from 'fs';
 import path, { dirname } from 'path';
@@ -18,7 +18,7 @@ const loadCardLibrary = (filePath) => {
   return JSON.parse(jsonLibrary);
 }
 
-const libraryPath = path.join(__dirname, '/data/cards.json');
+const libraryPath = path.join(__dirname, './data/cards.json');
 
 
 const WSPORT = 8080;
@@ -135,4 +135,5 @@ app.ws('/chat', wsHandler);
  * Start the server.
  */
 app.listen(WSPORT);
+app.use(Express.static(path.resolve(__dirname, '../client/build')));
 console.log(`Listening on port ${WSPORT}`);
