@@ -21,7 +21,7 @@ const loadCardLibrary = (filePath) => {
 const libraryPath = path.join(__dirname, './data/cards.json');
 
 
-const WSPORT = 8080;
+const WSPORT = process.env.PORT || 5000;
 const app = new Express();
 
 const clients = new Set();

@@ -5,7 +5,7 @@ import { MessageTemplate } from 'shared/Message.mjs';
 // then we set the host to "localhost:8080"
 // If the app is in production mode (using npm run build)
 // then the host is the current browser host
-const host = process.env.NODE_ENV === 'production' ? window.location.host : 'localhost:8080'
+const host = process.env.NODE_ENV === 'production' ? window.location.host : 'localhost:5000'
 
 let send
 let onMessageCallbacks = [ ];
