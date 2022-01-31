@@ -1,4 +1,4 @@
-// src/websocket.js
+import { MessageTemplate } from 'shared/Message.mjs';
 
 // The server host is determined based on the mode
 // If the app is running in development mode (using npm start)
@@ -9,13 +9,6 @@ const host = process.env.NODE_ENV === 'production' ? window.location.host : 'loc
 
 let send
 let onMessageCallbacks = [ ];
-
-export const MessageTemplate = {
-    from:   "unknown",
-    kind:   "message",
-    head:   "",
-    body:   ""
-};
 
 export const startWebsocketConnection = () => {
   const ws = new window.WebSocket('ws://' + host + '/chat') || {}

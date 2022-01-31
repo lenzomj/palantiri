@@ -3,7 +3,7 @@ import expressWs from 'express-ws';
 import { v4 as uuidv4 } from 'uuid';
 
 import Game from 'shared/Game.mjs';
-import { MessageTemplate } from '../client/src/lib/WebSocket.mjs';
+import { MessageTemplate } from 'shared/Message.mjs';
 
 import fs from 'fs';
 import path, { dirname } from 'path';
