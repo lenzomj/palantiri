@@ -34,8 +34,8 @@ test('User can reduce the library to several encounter sets', () => {
 test('User can obtain a unique card instance by record name', () => {
   let card1 = library.getCardByName("Necromancer's Pass");
   let card2 = library.getCardByName("Necromancer's Pass");
-  expect(card1.props.sides.A.name).toBe(card2.props.sides.A.name);
-  expect(card1.props.cardid).toBe(card2.props.cardid);
+  expect(card1.text.sides.A.name).toBe(card2.text.sides.A.name);
+  expect(card1.text.cardid).toBe(card2.text.cardid);
   expect(card1.uuid).not.toBe(card2.uuid);
 });
 
