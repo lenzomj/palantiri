@@ -13,10 +13,6 @@ export default class Library {
     this.records = new Map();
   }
 
-  [Symbol.iterator](){
-    return this.records[Symbol.iterator]()
-  }
-
   forEach(callBackFn) {
     return this.records.forEach(callBackFn);
   }
@@ -33,7 +29,7 @@ export default class Library {
     return this.records.get(recordID);
   }
 
-  reduce(...encounterSetNames) {
+  reduce(encounterSetNames) {
     let reduced = new Library();
     this.records.forEach((record, recordID) => {
       let recordSet = record.cardencounterset;

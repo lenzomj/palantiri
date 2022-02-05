@@ -1,4 +1,4 @@
-export const Scenarios = {
+export const Scenario = {
   "Passage Through Mirkwood": ["Passage Through Mirkwood",
                                "Spiders of Mirkwood",
                                "Dol Guldur Orcs"],

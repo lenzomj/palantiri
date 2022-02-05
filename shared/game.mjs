@@ -1,11 +1,10 @@
-import { Scenarios } from './Scenarios.mjs';
+import { Scenario } from './scenario.mjs';
 
 export const DefaultScenario = "Passage Through Mirkwood";
 
 const MAX_PLAYERS = 2;
 
 export class GameState {
-  static Default = new GameState();
 
   static Replacer = (key, value) => {
     if(value instanceof Map) {
@@ -28,92 +27,66 @@ export class GameState {
   }
 
   constructor() {
-    this.scenario = undefined;
-    this.scenarioDeck = new Map();
     this.players = new Map();
+    this.scenario = undefined;
     this.activeQuest = undefined;
     this.activeLocation = undefined;
     this.stagingArea = new Array();
     this.engagementArea = new Array();
-    this.attachments = new Map();
   }
 };
 
-export const getCardFrontSrc = (uuid, scenarioDeck) => {
-  let src;
-  if (scenarioDeck.has(uuid)) {
-    let card = scenarioDeck.get(uuid);
-    src = `https://palantiri.s3.amazonaws.com/images/cards/${card.cardsetid}/Cards/${uuid}.jpg`
-  }
-  return src;
-}
-
 export default class Game {
 
-  constructor(cardLibrary) {
-    this.cards = cardLibrary;
-    this.state = GameState.Default;
-    this.select(DefaultScenario);
-    this.quest("Flies and Spiders");
+  constructor(library) {
+    this.cardLibrary = library;
+    this.reset();
+  }
+
+  reset () {
+    this.encounterDeck = undefined;
+    this.state = new GameState();
   }
 
   select(scenarioName) {
-    if (!Scenarios.hasOwnProperty(scenarioName)) {
+    if (!Scenario.hasOwnProperty(scenarioName)) {
       return;
     }
-    this.state.scenarioDeck = new Map();
-    const encounterSetNames = Scenarios[scenarioName];
-    for (let [uuid, card] of Object.entries(this.cards)) {
-      const cardType = card.sides.A.type;
-      const cardSet = card.cardencounterset;
-      if (encounterSetNames.includes(cardSet)) {
-        this.state.scenarioDeck.set(uuid, card);
-      }
-    }
+    const encounterSetNames = Scenario[scenarioName];
+    this.encounterDeck = this.cardLibrary.reduce(encounterSetNames);
     this.state.scenario = scenarioName;
   }
 
   join(playerID, name) {
     if (this.state.players.size < MAX_PLAYERS) {
       this.state.players.set(playerID, name);
-      console.log(`${playerID} has joined the game as '${name}'`);
     }
   }
 
   leave(playerID) {
     if (this.state.players.has(playerID)) {
       this.state.players.delete(playerID);
-      console.log(`${playerID} has left the game'`);
     }
   }
 
-  findCardByName(cardName) {
-    let revealed;
-    this.state.scenarioDeck.forEach((card, uuid) => {
-      if (card.sides.A.name.toLowerCase() === cardName.toLowerCase()) {
-        revealed = uuid;
-      }
-    });
-    return revealed;
-  }
-
   reveal(cardName) {
-    let revealed = this.findCardByName(cardName);
-    if (revealed) {
-      this.state.stagingArea.push(revealed);
+    if (this.encounterDeck) {
+      let revealed = this.encounterDeck.getCardByName(cardName);
+      if (revealed) {
+        this.state.stagingArea.push(revealed);
+      }
     }
   }
 
   discard(stagingIndex) {
     let staged = this.state.stagingArea[stagingIndex];
-
     if (staged) {
       this.state.stagingArea.splice(stagingIndex, 1);
     }
   }
 
   quest(cardName) {
-    let found = this.findCardByName(cardName);
+    let found = this.encounterDeck.getCardByName(cardName);
     if (found) {
       this.state.activeQuest = found;
     }
@@ -140,7 +113,6 @@ export default class Game {
 
   engage(stagingIndex) {
     let staged = this.state.stagingArea[stagingIndex];
-
     if (staged) {
       this.state.stagingArea.splice(stagingIndex, 1);
       this.state.engagementArea.push(staged);
@@ -149,7 +121,6 @@ export default class Game {
 
   return(engagementIndex) {
     let engaged = this.state.engagementArea[engagementIndex];
-
     if (engaged) {
       this.state.engagementArea.splice(engagementIndex, 1);
       this.state.stagingArea.push(engaged);
@@ -158,21 +129,16 @@ export default class Game {
 
   defeat(engagementIndex) {
     let engaged = this.state.engagementArea[engagementIndex];
-
     if (engaged) {
       this.state.engagementArea.splice(engagementIndex, 1);
     }
   }
 
-  clearStagingArea() {
-    this.state.stagingArea = [ ];
-  }
-
-  clearEngagementArea() {
-    this.state.engagementArea = [ ];
-  }
-
-  getStateAsJSON () {
+  exportState () {
     return JSON.stringify(this.state, GameState.Replacer);
+  }
+
+  importState (jsonState) {
+    this.state = JSON.parse(jsonState, GameState.Reviver);
   }
 }

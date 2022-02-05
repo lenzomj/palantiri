@@ -3,8 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 export default class Card {
   constructor(record) {
     this.uuid = uuidv4();
-    this.text = record;
-    this.props = {
+    this.props = record;
+    this.state = {
       "exhausted": false,
       "side": "A",
       "image": `${this.getFrontImage()}`
@@ -13,30 +13,30 @@ export default class Card {
   }
 
   getFrontImage() {
-    return `${this.text.cardsetid}/Cards/${this.text.cardid}.jpg`
+    return `${this.props.cardsetid}/Cards/${this.props.cardid}.jpg`
   }
 
   getBackImage() {
-    if (this.text.sides.B.name === "player") {
+    if (this.props.sides.B.name === "player") {
       return "player_cardback.jpg";
-    } else if (this.text.sides.B.name === "encounter") {
+    } else if (this.props.sides.B.name === "encounter") {
       return "encounter_cardback.jpg";
     } else {
-      return `${this.text.cardsetid}/Cards/${this.text.cardid}-B.jpg`
+      return `${this.props.cardsetid}/Cards/${this.props.cardid}-B.jpg`
     }
   }
 
   exhaust() {
-    this.props.exhausted = !this.props.exhausted;
+    this.state.exhausted = !this.state.exhausted;
   }
 
   flip() {
-    if (this.props.side === "A") {
-      this.props.side = "B";
-      this.props.image = this.getBackImage();
+    if (this.state.side === "A") {
+      this.state.side = "B";
+      this.state.image = this.getBackImage();
     } else {
-      this.props.side = "A";
-      this.props.image = this.getFrontImage();
+      this.state.side = "A";
+      this.state.image = this.getFrontImage();
     }
   }
 
