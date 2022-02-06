@@ -15,7 +15,7 @@ export default class App extends React.Component {
     super(props)
     this.state = { playerID: undefined,
                    playerName: "Observer",
-                   playerView: "",
+                   playerView: undefined,
                    gameState: new GameState()
                  };
   }
