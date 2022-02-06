@@ -2,7 +2,8 @@ import Express from 'express';
 import expressWs from 'express-ws';
 import { v4 as uuidv4 } from 'uuid';
 
-import Game from 'shared/Game.mjs';
+import { loadLibraryFromFile } from 'shared/library_loader.mjs';
+import Game from 'shared/game.mjs';
 import { MessageTemplate } from 'shared/Message.mjs';
 
 import fs from 'fs';
@@ -11,21 +12,14 @@ import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
-
-const loadCardLibrary = (filePath) => {
-  let cardLibrary;
-  let jsonLibrary = fs.readFileSync(filePath);
-  return JSON.parse(jsonLibrary);
-}
-
-const libraryPath = path.join(__dirname, './data/cards.json');
-
+const libraryPath = path.join(__dirname, '../shared/data/cards.json');
 
 const WSPORT = process.env.PORT || 5000;
 const app = new Express();
 
 const clients = new Set();
-const game = new Game(loadCardLibrary(libraryPath));
+const game = new Game(loadLibraryFromFile(libraryPath));
+game.default();
 
 /*
  * Define a WebSocket handler and add it to the /chat route.
@@ -56,6 +50,14 @@ const wsHandler = (ws) => {
           game.quest(call.body);
           stateChanged = true;
           break;
+        case "show":
+          game.show(call.body);
+          stateChanged = true;
+          break;
+        case "hide":
+          game.hide(call.body);
+          stateChanged = true;
+          break;
         case "reveal":
           game.reveal(call.body);
           stateChanged = true;
@@ -84,6 +86,30 @@ const wsHandler = (ws) => {
           game.return(call.body);
           stateChanged = true;
           break;
+        case "flip":
+          const regexpFlipCmd = /([0-9]+) (.*)/i;
+          const flipCmdMatch = call.body.match(regexpFlipCmd);
+          if (flipCmdMatch) {
+            game.flip(flipCmdMatch[2].toLowerCase(), flipCmdMatch[1]);
+          }
+          stateChanged = true;
+          break;
+        case "attach":
+          const regexpAttachCmd = /([0-9]+) (.*)/i;
+          const attachCmdMatch = call.body.match(regexpAttachCmd);
+          if (attachCmdMatch) {
+            game.attach(attachCmdMatch[1], attachCmdMatch[2]);
+          }
+          stateChanged = true;
+          break;
+        case "detach":
+          const regexpDetachCmd = /([0-9]+) ([0-9]+)/i;
+          const detachCmdMatch = call.body.match(regexpDetachCmd);
+          if (detachCmdMatch) {
+            game.detach(detachCmdMatch[1], detachCmdMatch[2]);
+          }
+          stateChanged = true;
+          break;
       }
       if (stateChanged) {
         wsBroadcastGameState();
@@ -105,7 +131,7 @@ const wsSendGameState = (ws) => {
     msg.from = "gamemaster";
     msg.kind = "action";
     msg.head = "state";
-    msg.body = game.getStateAsJSON();
+    msg.body = game.exportState();
     ws.send(JSON.stringify(msg));
     //wsBroadcast(JSON.stringify(msg));
 }

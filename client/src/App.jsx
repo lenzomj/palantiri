@@ -7,7 +7,7 @@ import InfoBox from './components/InfoBox';
 import ChatBox from './components/ChatBox';
 
 import { registerOnMessageCallback } from './lib/WebSocket';
-import { GameState } from 'shared/Game';
+import { GameState } from 'shared/game';
 
 export default class App extends React.Component {
 
@@ -15,8 +15,8 @@ export default class App extends React.Component {
     super(props)
     this.state = { playerID: undefined,
                    playerName: "Observer",
-                   playerView: "",
-                   gameState: GameState.Default
+                   playerView: undefined,
+                   gameState: new GameState()
                  };
   }
 

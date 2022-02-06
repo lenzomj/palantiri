@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import styled from "styled-components";
 
+const defaultImage = "https://palantiri.s3.amazonaws.com/images/unselected_cardback.png";
+
 export default class InfoBox extends Component {
 
   constructor (props) {
@@ -8,9 +10,10 @@ export default class InfoBox extends Component {
   }
 
   render () {
+    const view = this.props.appState.playerView ?? defaultImage;
     return (
     <Layout>
-      <Preview src={this.props.appState.playerView} />
+      <Preview src={view} />
     </Layout>
     );
   }
@@ -30,6 +33,6 @@ const Preview = styled.img`
   margin-bottom: 1rem;
   border: 2px solid white;
   border-radius: 8px;
-  width: 60%;
+  width: 50%;
 `;
 

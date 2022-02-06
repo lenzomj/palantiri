@@ -1,4 +1,4 @@
-export const Scenarios = {
+export const Scenario = {
   "Passage Through Mirkwood": ["Passage Through Mirkwood",
                                "Spiders of Mirkwood",
                                "Dol Guldur Orcs"],
@@ -15,6 +15,10 @@ export const Scenarios = {
   "The Hunt for Gollum":      ["The Hunt for Gollum",
                                "Journey Down the Anduin",
                                "Sauron's Reach"],
+
+  "Conflict at the Carrock":  ["Conflict at the Carrock",
+                               "Journey Down the Anduin",
+                               "Wilderlands"],
 
   "Return to Mirkwood":       ["Return to Mirkwood",
                                "Spiders of Mirkwood",
