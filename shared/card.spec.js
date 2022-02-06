@@ -45,6 +45,6 @@ test('User can attach a card to another card', () => {
   let objective = library.getCardByName("Shadow Key");
   let guard = library.getCardByName("Cavern Guardian");
   objective.attach(guard);
-  expect(objective.attachments.size).toBe(1);
-  expect(objective.attachments.get(guard.uuid)).toBeDefined();
+  expect(objective.attachments.length).toBe(1);
+  expect(objective.attachments[0]).toBeDefined();
 });

@@ -9,7 +9,7 @@ export default class Card {
       "side": "A",
       "image": `${this.getFrontImage()}`
     };
-    this.attachments = new Map();
+    this.attachments = new Array();
   }
 
   getFrontImage() {
@@ -41,6 +41,13 @@ export default class Card {
   }
 
   attach(otherCard) {
-    this.attachments.set(otherCard.uuid, otherCard);
+    this.attachments.push(otherCard);
+  }
+
+  detach(attachmentIndex) {
+    let attachment = this.attachments[attachmentIndex];
+    if (attachment) {
+      this.attachments.splice(attachmentIndex, 1);
+    }
   }
 }
