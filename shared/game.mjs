@@ -1,7 +1,5 @@
 import { Scenario } from './scenario.mjs';
 
-export const DefaultScenario = "Passage Through Mirkwood";
-
 const MAX_PLAYERS = 2;
 
 export class GameState {
@@ -46,6 +44,13 @@ export default class Game {
   reset () {
     this.encounterDeck = undefined;
     this.state = new GameState();
+  }
+
+  default() {
+    this.select("Passage Through Mirkwood");
+    this.quest("Flies and Spiders");
+    this.reveal("Forest Spider");
+    this.reveal("Old Forest Road");
   }
 
   select(scenarioName) {

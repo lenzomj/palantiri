@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from "styled-components";
 
-import {getCardFrontSrc} from 'shared/Game.mjs'
+const imageServer = "https://palantiri.s3.amazonaws.com/images";
 
 export default class PlayBox extends Component {
 
@@ -11,48 +11,34 @@ export default class PlayBox extends Component {
 
   render () {
     const {activeQuest, activeLocation,
-           stagingArea, engagementArea,
-           scenarioDeck } = this.props.appState.gameState;
-
+           stagingArea, engagementArea } = this.props.appState.gameState;
     return (
       <Layout>
         <StagingArea>
           {
-            stagingArea.map((uuid, key) => {
+            stagingArea.map((card, key) => {
               return (
                 <Card key={key}
-                      data-uuid={uuid}
-                      data-slot={key}
-                      data-area="staging"
-                      src={getCardFrontSrc(uuid, scenarioDeck)}
+                      src={`${imageServer}/${card.state.image}`}
                       onClick={this.props.onCardSelected} />
               );
             })
           }
         </StagingArea>
         <QuestArea>
-          <QuestCard data-uuid={activeQuest}
-                     data-slot="0"
-                     data-area="quest"
-                     src={getCardFrontSrc(activeQuest, scenarioDeck)}
+          <QuestCard src={`${imageServer}/${activeQuest?.state.image}`}
                      onClick={this.props.onCardSelected} />
         </QuestArea>
         <LocationArea>
-          <Card data-uuid={activeLocation}
-                data-slot="0"
-                data-area="location"
-                src={getCardFrontSrc(activeLocation, scenarioDeck)}
+          <Card src={`${imageServer}/${activeLocation?.state.image ?? "unselected_cardback.png"}`}
                 onClick={this.props.onCardSelected} />
         </LocationArea>
         <EngagementArea>
           {
-            engagementArea.map((uuid, key) => {
+            engagementArea.map((card, key) => {
               return (
                 <Card key={key}
-                      data-uuid={uuid}
-                      data-slot={key}
-                      data-area="engagement"
-                      src={getCardFrontSrc(uuid, scenarioDeck)}
+                      src={`${imageServer}/${card.state.image}`}
                       onClick={this.props.onCardSelected} />
               );
             })

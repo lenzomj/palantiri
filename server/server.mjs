@@ -2,7 +2,8 @@ import Express from 'express';
 import expressWs from 'express-ws';
 import { v4 as uuidv4 } from 'uuid';
 
-import Game from 'shared/Game.mjs';
+import { loadLibraryFromFile } from 'shared/library_loader.mjs';
+import Game from 'shared/game.mjs';
 import { MessageTemplate } from 'shared/Message.mjs';
 
 import fs from 'fs';
@@ -11,21 +12,14 @@ import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
-
-const loadCardLibrary = (filePath) => {
-  let cardLibrary;
-  let jsonLibrary = fs.readFileSync(filePath);
-  return JSON.parse(jsonLibrary);
-}
-
-const libraryPath = path.join(__dirname, './data/cards.json');
-
+const libraryPath = path.join(__dirname, '../shared/data/cards.json');
 
 const WSPORT = process.env.PORT || 5000;
 const app = new Express();
 
 const clients = new Set();
-const game = new Game(loadCardLibrary(libraryPath));
+const game = new Game(loadLibraryFromFile(libraryPath));
+game.default();
 
 /*
  * Define a WebSocket handler and add it to the /chat route.
@@ -105,7 +99,7 @@ const wsSendGameState = (ws) => {
     msg.from = "gamemaster";
     msg.kind = "action";
     msg.head = "state";
-    msg.body = game.getStateAsJSON();
+    msg.body = game.exportState();
     ws.send(JSON.stringify(msg));
     //wsBroadcast(JSON.stringify(msg));
 }

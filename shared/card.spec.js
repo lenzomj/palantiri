@@ -10,9 +10,9 @@ test('A card is ready when played', () => {
 
 test('A quest card has a unique image front and back', () => {
   let card = library.getCardByName("Out of the Dungeons");
-  expect(card.state.image).toBe("51223bd0-ffd1-11df-a976-0801200c9000/Cards/51223bd0-ffd1-11df-a976-0801200c9131.jpg");
+  expect(card.state.image).toBe("cards/51223bd0-ffd1-11df-a976-0801200c9000/Cards/51223bd0-ffd1-11df-a976-0801200c9131.jpg");
   card.flip();
-  expect(card.state.image).toBe("51223bd0-ffd1-11df-a976-0801200c9000/Cards/51223bd0-ffd1-11df-a976-0801200c9131-B.jpg");
+  expect(card.state.image).toBe("cards/51223bd0-ffd1-11df-a976-0801200c9000/Cards/51223bd0-ffd1-11df-a976-0801200c9131-B.jpg");
 });
 
 test('An encounter card has a common card back image', () => {

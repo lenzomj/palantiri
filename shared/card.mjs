@@ -13,7 +13,7 @@ export default class Card {
   }
 
   getFrontImage() {
-    return `${this.props.cardsetid}/Cards/${this.props.cardid}.jpg`
+    return `cards/${this.props.cardsetid}/Cards/${this.props.cardid}.jpg`
   }
 
   getBackImage() {
@@ -22,7 +22,7 @@ export default class Card {
     } else if (this.props.sides.B.name === "encounter") {
       return "encounter_cardback.jpg";
     } else {
-      return `${this.props.cardsetid}/Cards/${this.props.cardid}-B.jpg`
+      return `cards/${this.props.cardsetid}/Cards/${this.props.cardid}-B.jpg`
     }
   }
 
