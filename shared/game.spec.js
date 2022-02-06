@@ -15,6 +15,13 @@ test('After creating a game, it includes a full card library', () => {
   expect(game.cardLibrary.getSize()).toBe(4844);
 });
 
+test('A default game is Passage Through Mirkwood', () => {
+  game.default();
+  expect(game.state.scenario).toBe("Passage Through Mirkwood");
+  expect(game.state.activeQuest.props.sides.A.name).toBe("Flies and Spiders");
+  expect(game.state.stagingArea.length).toBe(2);
+});
+
 test('After selecting a known scenario, the game has an encounter deck', () => {
   game.select("Escape from Dol Guldur");
   expect(game.encounterDeck).toBeDefined();
@@ -131,6 +138,21 @@ test('Upon defeating an enemy, it is discarded from the engagement area', () => 
   game.defeat(0);
   expect(game.state.engagementArea.length).toBe(0);
   expect(game.state.stagingArea.length).toBe(0);
+});
+
+test('A player can guard objectives in the staging area', () => {
+  game.select("Escape from Dol Guldur");
+  game.reveal("Dungeon Torch");
+  game.attach(0, "Cavern Guardian");
+  expect(game.state.stagingArea[0].attachments.length).toBe(1);
+});
+
+test('A guard can abandon a guarded objective', () => {
+  game.select("Escape from Dol Guldur");
+  game.reveal("Dungeon Torch");
+  game.attach(0, "Cavern Guardian");
+  game.detach(0, 0);
+  expect(game.state.stagingArea[0].attachments.length).toBe(0);
 });
 
 test('Game state is transferable as JSON', () => {

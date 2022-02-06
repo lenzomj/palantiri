@@ -50,6 +50,14 @@ const wsHandler = (ws) => {
           game.quest(call.body);
           stateChanged = true;
           break;
+        case "show":
+          game.show(call.body);
+          stateChanged = true;
+          break;
+        case "hide":
+          game.hide(call.body);
+          stateChanged = true;
+          break;
         case "reveal":
           game.reveal(call.body);
           stateChanged = true;
@@ -76,6 +84,30 @@ const wsHandler = (ws) => {
           break;
         case "return":
           game.return(call.body);
+          stateChanged = true;
+          break;
+        case "flip":
+          const regexpFlipCmd = /([0-9]+) (.*)/i;
+          const flipCmdMatch = call.body.match(regexpFlipCmd);
+          if (flipCmdMatch) {
+            game.flip(flipCmdMatch[2].toLowerCase(), flipCmdMatch[1]);
+          }
+          stateChanged = true;
+          break;
+        case "attach":
+          const regexpAttachCmd = /([0-9]+) (.*)/i;
+          const attachCmdMatch = call.body.match(regexpAttachCmd);
+          if (attachCmdMatch) {
+            game.attach(attachCmdMatch[1], attachCmdMatch[2]);
+          }
+          stateChanged = true;
+          break;
+        case "detach":
+          const regexpDetachCmd = /([0-9]+) ([0-9]+)/i;
+          const detachCmdMatch = call.body.match(regexpDetachCmd);
+          if (detachCmdMatch) {
+            game.detach(detachCmdMatch[1], detachCmdMatch[2]);
+          }
           stateChanged = true;
           break;
       }

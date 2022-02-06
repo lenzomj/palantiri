@@ -30,6 +30,6 @@ const Preview = styled.img`
   margin-bottom: 1rem;
   border: 2px solid white;
   border-radius: 8px;
-  width: 60%;
+  width: 50%;
 `;
 

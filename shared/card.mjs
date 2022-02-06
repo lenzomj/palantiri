@@ -22,7 +22,7 @@ export default class Card {
     } else if (this.props.sides.B.name === "encounter") {
       return "encounter_cardback.jpg";
     } else {
-      return `cards/${this.props.cardsetid}/Cards/${this.props.cardid}-B.jpg`
+      return `cards/${this.props.cardsetid}/Cards/${this.props.cardid}.B.jpg`
     }
   }
 

@@ -31,6 +31,7 @@ export class GameState {
     this.activeLocation = undefined;
     this.stagingArea = new Array();
     this.engagementArea = new Array();
+    this.showArea = new Array();
   }
 };
 
@@ -83,10 +84,41 @@ export default class Game {
     }
   }
 
+  show(cardName) {
+    if (this.encounterDeck) {
+      let shown = this.encounterDeck.getCardByName(cardName);
+      if (shown) {
+        this.state.showArea.push(shown);
+      }
+    }
+  }
+
+  hide(showIndex) {
+    let shown = this.state.showArea[showIndex];
+    if (shown) {
+      this.state.showArea.splice(showIndex, 1);
+    }
+  }
+
   discard(stagingIndex) {
     let staged = this.state.stagingArea[stagingIndex];
     if (staged) {
       this.state.stagingArea.splice(stagingIndex, 1);
+    }
+  }
+
+  attach(stagingIndex, cardName) {
+    let staged = this.state.stagingArea[stagingIndex];
+    let attachment = this.cardLibrary.getCardByName(cardName);
+    if (staged && attachment) {
+      staged.attach(attachment);
+    }
+  }
+
+  detach(stagingIndex, attachmentIndex) {
+    let staged = this.state.stagingArea[stagingIndex];
+    if (staged) {
+      staged.detach(attachmentIndex);
     }
   }
 
@@ -129,6 +161,25 @@ export default class Game {
     if (engaged) {
       this.state.engagementArea.splice(engagementIndex, 1);
       this.state.stagingArea.push(engaged);
+    }
+  }
+
+  flip(area, index) {
+    switch(area) {
+      case "quest":
+        this.state.activeQuest?.flip();
+        break;
+      case "location":
+        this.state.activeLocation?.flip();
+        break;
+      case "engagement":
+        this.state.engagementArea[index]?.flip();
+        break;
+      case "staging":
+        this.state.stagingArea[index]?.flip();
+        break;
+      default:
+        break;
     }
   }
 
