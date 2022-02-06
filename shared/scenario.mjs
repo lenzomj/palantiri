@@ -16,6 +16,10 @@ export const Scenario = {
                                "Journey Down the Anduin",
                                "Sauron's Reach"],
 
+  "Conflict at the Carrock":  ["Conflict at the Carrock",
+                               "Journey Down the Anduin",
+                               "Wilderlands"],
+
   "Return to Mirkwood":       ["Return to Mirkwood",
                                "Spiders of Mirkwood",
                                "Wilderlands"],
