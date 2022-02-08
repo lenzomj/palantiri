@@ -31,7 +31,7 @@ export class GameState {
     this.activeLocation = undefined;
     this.stagingArea = new Array();
     this.engagementArea = new Array();
-    this.showArea = new Array();
+    this.displayArea = new Array();
   }
 };
 
@@ -84,19 +84,18 @@ export default class Game {
     }
   }
 
-  show(cardName) {
-    if (this.encounterDeck) {
-      let shown = this.encounterDeck.getCardByName(cardName);
-      if (shown) {
-        this.state.showArea.push(shown);
-      }
+  display(stagingIndex) {
+    let staged = this.state.stagingArea[stagingIndex];
+    if (staged) {
+      this.state.stagingArea.splice(stagingIndex, 1);
+      this.state.displayArea.push(staged);
     }
   }
 
-  hide(showIndex) {
-    let shown = this.state.showArea[showIndex];
-    if (shown) {
-      this.state.showArea.splice(showIndex, 1);
+  hide(displayIndex) {
+    let displayed = this.state.displayArea[displayIndex];
+    if (displayed) {
+      this.state.displayArea.splice(displayIndex, 1);
     }
   }
 

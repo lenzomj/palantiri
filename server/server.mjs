@@ -50,8 +50,8 @@ const wsHandler = (ws) => {
           game.quest(call.body);
           stateChanged = true;
           break;
-        case "show":
-          game.show(call.body);
+        case "display":
+          game.display(call.body);
           stateChanged = true;
           break;
         case "hide":

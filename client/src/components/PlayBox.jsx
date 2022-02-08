@@ -29,7 +29,7 @@ export default class PlayBox extends Component {
 
   render () {
     const {activeQuest, activeLocation,
-           stagingArea, engagementArea } = this.props.appState.gameState;
+           stagingArea, engagementArea, displayArea } = this.props.appState.gameState;
     return (
       <Layout>
         <StagingArea>
@@ -52,6 +52,20 @@ export default class PlayBox extends Component {
             <QuestCard src={`${imageServer}/${activeQuest?.state.image}`}
                        onClick={this.props.onCardSelected} />
           </CardBox>
+          {
+            displayArea.map((card, key) => {
+              return (
+                <CardBox key={key}>
+                <Card
+                      src={`${imageServer}/${card.state.image}`}
+                      onClick={this.props.onCardSelected} />
+                <Attachments cards={card.attachments}
+                             onClick={this.props.onCardSelected} />
+
+                </CardBox>
+              );
+            })
+          }
         </QuestArea>
         <LocationArea>
           <CardBox>
@@ -98,7 +112,8 @@ const StagingArea = styled.div`
 
 const QuestArea = styled.div`
   grid-area: quest;
-  display: flex;
+  display: block;
+  border-left: 1px dotted rgba(255,255,255,0.4);
 `;
 
 const LocationArea = styled.div`
