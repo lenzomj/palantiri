@@ -33,6 +33,15 @@ const Preview = styled.img`
   margin-bottom: 1rem;
   border: 2px solid white;
   border-radius: 8px;
-  width: 50%;
+  width: 60%;
+  transition: transform .2s;
+
+  &:hover {
+    position:relative;
+    border: 1px solid white;
+    border-radius: 8px;
+    transform: scale(1.5) translate(-30px, 40px);
+    z-index:999;
+  }
 `;
 

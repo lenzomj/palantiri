@@ -1,4 +1,4 @@
-import { Scenario } from './scenario.mjs';
+import { Scenario, setupScenario } from './scenario.mjs';
 
 const MAX_PLAYERS = 2;
 
@@ -49,18 +49,17 @@ export default class Game {
 
   default() {
     this.select("Passage Through Mirkwood");
-    this.quest("Flies and Spiders");
-    this.reveal("Forest Spider");
-    this.reveal("Old Forest Road");
   }
 
   select(scenarioName) {
     if (!Scenario.hasOwnProperty(scenarioName)) {
       return;
     }
+    this.reset();
     const encounterSetNames = Scenario[scenarioName];
     this.encounterDeck = this.cardLibrary.reduce(encounterSetNames);
     this.state.scenario = scenarioName;
+    setupScenario(this, scenarioName);
   }
 
   join(playerID, name) {
@@ -170,6 +169,9 @@ export default class Game {
         break;
       case "location":
         this.state.activeLocation?.flip();
+        break;
+      case "display":
+        this.state.displayArea[index]?.flip();
         break;
       case "engagement":
         this.state.engagementArea[index]?.flip();

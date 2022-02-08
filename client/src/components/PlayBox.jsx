@@ -21,6 +21,25 @@ const Attachments = (props) => {
   );
 }
 
+const Display = (props) => {
+  const { cards } = props;
+  return (
+    <div>
+      <Card src={`${imageServer}/unselected_cardback.png`} />
+      {
+        cards.map((attachment, key) => {
+          return (
+            <DisplayItem src={`${imageServer}/${attachment.state.image}`}
+                        key={key}
+                        offset={key + 1}
+                        onClick={props.onClick}/>
+          );
+        })
+      }
+    </div>
+  );
+}
+
 export default class PlayBox extends Component {
 
   constructor (props) {
@@ -52,20 +71,11 @@ export default class PlayBox extends Component {
             <QuestCard src={`${imageServer}/${activeQuest?.state.image}`}
                        onClick={this.props.onCardSelected} />
           </CardBox>
-          {
-            displayArea.map((card, key) => {
-              return (
-                <CardBox key={key}>
-                <Card
-                      src={`${imageServer}/${card.state.image}`}
-                      onClick={this.props.onCardSelected} />
-                <Attachments cards={card.attachments}
-                             onClick={this.props.onCardSelected} />
+          <CardBox>
+            <Display cards={displayArea}
+                     onClick={this.props.onCardSelected} />
 
-                </CardBox>
-              );
-            })
-          }
+          </CardBox>
         </QuestArea>
         <LocationArea>
           <CardBox>
@@ -114,6 +124,7 @@ const QuestArea = styled.div`
   grid-area: quest;
   display: block;
   border-left: 1px dotted rgba(255,255,255,0.4);
+  padding-left: 1rem;
 `;
 
 const LocationArea = styled.div`
@@ -148,7 +159,6 @@ const Card = styled.img`
   cursor: pointer;
   width: 85px;
   height: auto;
-  /*transition: transform .2s;*/
 
   /* Disable Draggable Images */
   -webkit-user-drag: none;
@@ -162,14 +172,6 @@ const Card = styled.img`
     border-radius: 8px;
     z-index: 999;
   }
-
-  /*&:hover {
-    position:relative;
-    border: 1px solid white;
-    border-radius: 8px;
-    transform: scale(4.0) translate(30px, 30px);
-    z-index:999;
-  }*/
 `;
 
 const Attachment = styled.img`
@@ -188,9 +190,20 @@ const Attachment = styled.img`
   }
 `;
 
+const DisplayItem = styled.img`
+  position: absolute;
+  /*top: ${props => 25 * props.offset}px;*/
+  left: ${props => 15 * props.offset}px;
+  z-index: ${props => 1 * props.offset};
+  cursor: pointer;
+  width: 85px;
+  height: auto;
 
-const TappedCard = styled(Card)`
-  transform: rotate(90deg);
+  &:hover {
+    border: 1px solid white;
+    border-radius: 8px;
+    z-index: 999;
+  }
 `;
 
 const QuestCard = styled(Card)`

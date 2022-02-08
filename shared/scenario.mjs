@@ -26,3 +26,49 @@ export const Scenario = {
 
 };
 
+export const setupScenario = (game, scenario) => {
+  switch(scenario) {
+    case "Passage Through Mirkwood":
+      game.quest("Flies and Spiders");
+      game.reveal("Forest Spider");
+      game.reveal("Old Forest Road");
+      game.flip("quest", 0);
+      break;
+    case "Journey Down the Anduin":
+      game.quest("To the River...");
+      game.reveal("Hill Troll");
+      game.display(0);
+      break;
+    case "Escape from Dol Guldur":
+      game.quest("The Necromancer's Tower");
+      game.reveal("Nazgul of Dol Guldur");
+      game.display(0);
+      game.reveal("Shadow Key");
+      game.reveal("Gandalf's Map");
+      game.reveal("Dungeon Torch");
+      break;
+    case "The Hunt for Gollum":
+      game.quest("The Hunt Begins");
+      break;
+    case "Conflict at the Carrock":
+      game.quest("Grimbeorn's Quest");
+      game.reveal("The Carrock");
+      game.reveal("Rupert");
+      game.reveal("Stuart");
+      game.reveal("Morris");
+      game.reveal("Louis");
+      game.display(4);
+      game.display(3);
+      game.display(2);
+      game.display(1);
+      break;
+    case "Return to Mirkwood":
+      game.quest("Through the Forest");
+      game.reveal("Gollum");
+      game.display(0);
+      break;
+    default:
+      break;
+  }
+};
+
