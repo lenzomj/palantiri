@@ -19,7 +19,7 @@ export default class NaviBox extends Component {
 
     return (
       <Layout>
-        <FirstItem><p>Palantir v0.2</p></FirstItem>
+        <FirstItem><p>Palantir v0.2.1</p></FirstItem>
         <Item><p>Players: {this.props.appState.gameState.players.size || 0}</p></Item>
         <Item><p>{this.props.appState.playerName}</p></Item>
         <Item><p>Scenario: {this.props.appState.gameState.scenario ?? "Not Selected"}</p></Item>

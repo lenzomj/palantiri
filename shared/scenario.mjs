@@ -24,6 +24,10 @@ export const Scenario = {
                                "Spiders of Mirkwood",
                                "Wilderlands"],
 
+  "Into the Pit":             ["Into the Pit",
+                               "Twists and Turns",
+                               "Hazards of the Pit",
+                               "Goblins of the Deep"],
 };
 
 export const setupScenario = (game, scenario) => {
@@ -67,6 +71,17 @@ export const setupScenario = (game, scenario) => {
       game.reveal("Gollum");
       game.display(0);
       break;
+    case "Into the Pit":
+      game.quest("Entering the Mines");
+      game.reveal("East-Gate");
+      game.reveal("Bridge of Khazad-Dum");
+      game.reveal("First Hall");
+      game.reveal("Cave Torch");
+      game.travel(0);
+      game.display(0);
+      game.display(0);
+      game.display(0);
+      game.flip("quest", 0);
     default:
       break;
   }
