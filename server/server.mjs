@@ -110,6 +110,9 @@ const wsHandler = (ws) => {
           }
           stateChanged = true;
           break;
+        case "ping":
+          console.log(`${clientID} is alive`);
+          break;
       }
       if (stateChanged) {
         wsBroadcastGameState();

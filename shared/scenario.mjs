@@ -28,6 +28,10 @@ export const Scenario = {
                                "Twists and Turns",
                                "Hazards of the Pit",
                                "Goblins of the Deep"],
+
+  "The Seventh Level":        ["The Seventh Level",
+                               "Plundering Goblins",
+                               "Goblins of the Deep"],
 };
 
 export const setupScenario = (game, scenario) => {
@@ -82,6 +86,13 @@ export const setupScenario = (game, scenario) => {
       game.display(0);
       game.display(0);
       game.flip("quest", 0);
+      break;
+    case "The Seventh Level":
+      game.quest("Search for the Chamber");
+      game.reveal("Book of Mazarbul");
+      game.display(0);
+      game.flip("quest", 0);
+      break;
     default:
       break;
   }

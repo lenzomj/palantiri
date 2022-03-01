@@ -6,8 +6,13 @@ import PlayBox from './components/PlayBox';
 import InfoBox from './components/InfoBox';
 import ChatBox from './components/ChatBox';
 
-import { registerOnMessageCallback } from './lib/WebSocket';
+import { registerOnMessageCallback, wsSendMessage } from './lib/WebSocket';
 import { GameState } from 'shared/game';
+
+const keepAlive = (playerID, interval) => {
+  wsSendMessage(playerID, "/ping keepalive");
+  setTimeout(() => { keepAlive(playerID, interval) }, interval);
+};
 
 export default class App extends React.Component {
 
@@ -25,7 +30,6 @@ export default class App extends React.Component {
   }
 
   onCardSelected (event) {
-    //console.log(event.target.getAttribute("data-uuid"));
     this.setState({
       playerView: event.target.src
     });
@@ -40,6 +44,7 @@ export default class App extends React.Component {
           this.setState({
             playerID: message.body
           });
+          keepAlive(this.state.playerID, 30000);
           break;
         case "state":
           let newState = JSON.parse(message.body, GameState.Reviver);
