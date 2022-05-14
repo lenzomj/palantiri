@@ -5,10 +5,11 @@
   "dependencies": {
     "express": "^4.17.2",
     "express-ws": "^5.0.2",
-    "shared": "file:./shared",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "shared": "file:./shared"
   },
   "scripts": {
+    "postinstall": "cd client && npm install",
     "start": "node server/server.mjs",
     "server": "node server/server.mjs",
     "client": "npm start --prefix client",
