@@ -1,70 +1,87 @@
-# Getting Started with Create React App
+# Palantiri
+Play the Lord of The Rings Living Card Game (LCG) online with others.
+As a game master, use this app to re-present the "table" to absent players.
+All players share the same perspective as the encounter deck is revealed.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Motivation
+The LOTR LCG is one of my absolute favorite games to play solo and with others.
+Cooperative play works best when everyone plays at the same table.
+Naturally, this has proven rather difficult during the pandemic -
+but really anytime you want to play with absent family and friends.
+Thus, finding myself quarantined and isolated for a week in early Feburary '22,
+I wrote this app.
 
-## Available Scripts
+## Inspiration
+I drew inspiration and content from a few sources:
 
-In the project directory, you can run:
+1. [Dragn Cards][1]
+2. [RingsDB][2]
 
-### `npm start`
+From Seastan's venerable [Dragn Cards][1], I borrowed a general look and feel.
+For lack of time (and expertise), I did not attempt to replicate full play -
+that is, all players must still manage their own physical decks
+and at least one player (the game master) must manage the encounter deck.
+Furthermore, there is no "game" per se; it's just a re-presentation of a game.
+The odds of the game still come down to the physical shuffle and draw of cards.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+From [RingsDB][2], I made liberal use of the scanned card images.
+Where else am I going to find thousands of digitally scanned cards?
+Again, the app does not understand the function or properties of any card.
+The game mechanics still come down to a knowlegeable game master and players.
 
+[1]: https://dragncards.com/lobby
+[2]: https://ringsdb.com
+
+## Implementation
+This project was bootstrapped with [Create React App][3].
+It deploys a front-end React app (client) with an Express sidecar (server).
+Each client establishes a persistent websocket connection with the server.
+The server maintains the "game" state and shares state updates with clients.
+
+### Commands
+The game master manipulates the "game" state through a simple command grammar.
+There are more elegant solutions, but these commands will do the job for now.
+
+| Command   | Argument(s)                                       | Description                                                |
+|-----------|---------------------------------------------------|------------------------------------------------------------|
+| /scenario | scenario_name                                     | Change the active scenario to scenario_name                |
+| /reveal   | card_title                                        | Add card_title to the staging area                         |
+| /display  | staging_index                                     | Move a card by index to the display area                   |
+| /hide     | display_index                                     | Remove a card by index from the display area               |
+| /discard  | staging_index                                     | Remove a card by index from the staging area               |
+| /attach   | staging_index card_title                          | Attach a card by title to another card in the staging area |
+| /detach   | staging_index attachment_index                    | Remove an attachment from a card in the staging area       |
+| /quest    | card_title                                        | Change the active quest                                    |
+| /travel   | staging_index                                     | Move a card by index to the active location area           |
+| /explore  | None                                              | Remove the active location from play                       |
+| /engage   | staging_index                                     | Move a card by index to the engagement area                |
+| /return   | engagement_index                                  | Return a card from the engagement area to the staging area |
+| /flip     | [quest,location,display,engagement,staging] index | Flip the specififed card by area and index                 |
+| /defeat   | engagement_index                                  | Remove a card from the engagement area by index            |
+
+[3]: https://github.com/facebook/create-react-app)
+
+### Scripts
+From the project directory, you can run the following scripts:
+
+#### `npm install`
+Installs necessary dependencies for both client and server.
+
+#### `npm run server`
+Runs the Express server listening on the default port.
+
+#### 'npm run client`
+Runs the client app listening on the default port.
+
+#### 'npm run dev'
+Concurrently runs both the server and client as a development pair.
+Open [http://localhost:3000](http://localhost:3000) to view it online.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-### `npm test`
+### 'npm run build'
+Builds the client app for production to the `build` folder.
+Bundles React in production mode and optimizes the build for performance.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### 'npm run test'
+Launches the test runner in the interactive watch mode.
