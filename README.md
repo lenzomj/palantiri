@@ -59,13 +59,16 @@ There are more elegant solutions, but these commands will do the job for now.
 | /flip     | [quest,location,display,engagement,staging] index | Flip the specififed card by area and index                 |
 | /defeat   | engagement_index                                  | Remove a card from the engagement area by index            |
 
-[3]: https://github.com/facebook/create-react-app)
+[3]: https://github.com/facebook/create-react-app
 
 ### Scripts
 From the project directory, you can run the following scripts:
 
 #### `npm install`
 Installs necessary dependencies for both client and server.
+
+#### `npm update`
+Updates node dependencies for both client and server.
 
 #### `npm run server`
 Runs the Express server listening on the default port.
