@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import styled from "styled-components";
 
+import { wsSendMessage } from '../lib/WebSocket';
+
+import {
+      Menu,
+      MenuItem,
+      MenuButton
+} from '@szhsin/react-menu';
+import '@szhsin/react-menu/dist/index.css';
+import '@szhsin/react-menu/dist/transitions/slide.css'
+
 const imageServer = "https://palantiri.s3.amazonaws.com/images";
 
 const Attachments = (props) => {
@@ -46,6 +56,7 @@ export default class PlayBox extends Component {
     super(props);
   }
 
+
   render () {
     const {activeQuest, activeLocation,
            stagingArea, engagementArea, displayArea } = this.props.appState.gameState;
@@ -56,9 +67,19 @@ export default class PlayBox extends Component {
             stagingArea.map((card, key) => {
               return (
                 <CardBox key={key}>
+                <Menu menuButton={
                 <Card
                       src={`${imageServer}/${card.state.image}`}
                       onClick={this.props.onCardSelected} />
+                }
+                arrow
+                onItemClick={(e) => wsSendMessage(this.props.appState.playerID, e.value)}>
+                  <MenuItem value={`/flip ${key} staging`}>Flip</MenuItem>
+                  <MenuItem value={`/engage ${key}`}>Engage</MenuItem>
+                  <MenuItem value={`/travel ${key}`}>Travel</MenuItem>
+                  <MenuItem value={`/discard ${key}`}>Discard</MenuItem>
+                  <MenuItem value={`/display ${key}`}>Display</MenuItem>
+                </Menu>
                 <Attachments cards={card.attachments}
                              onClick={this.props.onCardSelected} />
                 </CardBox>
@@ -68,19 +89,30 @@ export default class PlayBox extends Component {
         </StagingArea>
         <QuestArea>
           <CardBox>
+          <Menu menuButton={
             <QuestCard src={`${imageServer}/${activeQuest?.state.image}`}
                        onClick={this.props.onCardSelected} />
+          }
+          arrow
+          onItemClick={(e) => wsSendMessage(this.props.appState.playerID, e.value)}>
+            <MenuItem value={`/flip 0 quest`}>Flip</MenuItem>
+          </Menu>
           </CardBox>
           <CardBox>
             <Display cards={displayArea}
                      onClick={this.props.onCardSelected} />
-
           </CardBox>
         </QuestArea>
         <LocationArea>
           <CardBox>
+          <Menu menuButton={
             <Card src={`${imageServer}/${activeLocation?.state.image ?? "unselected_cardback.png"}`}
                   onClick={this.props.onCardSelected} />
+          }
+          arrow
+          onItemClick={(e) => wsSendMessage(this.props.appState.playerID, e.value)}>
+            <MenuItem value={`/explore `}>Explore</MenuItem>
+          </Menu>
           </CardBox>
         </LocationArea>
         <EngagementArea>
@@ -88,9 +120,17 @@ export default class PlayBox extends Component {
             engagementArea.map((card, key) => {
               return (
                 <CardBox key={key}>
+                <Menu menuButton={
                 <Card
                       src={`${imageServer}/${card.state.image}`}
                       onClick={this.props.onCardSelected} />
+                }
+                arrow
+                onItemClick={(e) => wsSendMessage(this.props.appState.playerID, e.value)}>
+                  <MenuItem value={`/flip ${key} engagement`}>Flip</MenuItem>
+                  <MenuItem value={`/defeat ${key}`}>Defeat</MenuItem>
+                  <MenuItem value={`/return ${key}`}>Return</MenuItem>
+                </Menu>
                 <Attachments cards={card.attachments}
                              onClick={this.props.onCardSelected} />
 
