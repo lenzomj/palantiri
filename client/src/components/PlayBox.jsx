@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 
-import Card from "./Card"
+import Card from "./Card";
 
 const imageServer = "https://palantiri.s3.amazonaws.com/images";
 
@@ -24,25 +24,52 @@ export default class PlayBox extends Component {
         <StagingArea>
           {stagingArea.map((card, key) => {
             return (
-              <Card key={key} id={key} card={card} context="staged" onSelect={this.props.onCardSelected} />
+              <Card
+                key={key}
+                id={key}
+                card={card}
+                context="staged"
+                onSelect={this.props.onCardSelected}
+              />
             );
           })}
         </StagingArea>
         <QuestArea>
-          <Card card={activeQuest} context="quest" onSelect={this.props.onCardSelected} />
+          <Card
+            card={activeQuest}
+            context="quest"
+            onSelect={this.props.onCardSelected}
+          />
+          <Card context="placeholder" />
           {displayArea.map((card, key) => {
             return (
-              <Card key={key} id={key} card={card} context="displayed" onSelect={this.props.onCardSelected} />
+              <Card
+                key={key}
+                id={key}
+                card={card}
+                context="displayed"
+                onSelect={this.props.onCardSelected}
+              />
             );
           })}
         </QuestArea>
         <LocationArea>
-          <Card card={activeLocation} context="traveled" onSelect={this.props.onCardSelected} />
+          <Card
+            card={activeLocation}
+            context="traveled"
+            onSelect={this.props.onCardSelected}
+          />
         </LocationArea>
         <EngagementArea>
           {engagementArea.map((card, key) => {
             return (
-              <Card key={key} id={key} card={card} context="engaged" onSelect={this.props.onCardSelected} />
+              <Card
+                key={key}
+                id={key}
+                card={card}
+                context="engaged"
+                onSelect={this.props.onCardSelected}
+              />
             );
           })}
         </EngagementArea>
