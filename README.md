@@ -88,3 +88,6 @@ Bundles React in production mode and optimizes the build for performance.
 
 ### `npm run test`
 Launches the test runner in the interactive watch mode.
+
+### `npx prettier -w <file>`
+Runs prettier in-place against a source file.
