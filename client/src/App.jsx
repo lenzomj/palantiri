@@ -8,6 +8,7 @@ import ChatBox from "./components/ChatBox";
 
 import { registerOnMessageCallback, wsSendMessage } from "./lib/WebSocket";
 import { GameState } from "shared/game";
+import { GameContext } from "./components/GameContext";
 
 const keepAlive = (playerID, interval) => {
   wsSendMessage(playerID, "/ping keepalive");
@@ -66,18 +67,20 @@ export default class App extends React.Component {
 
     return (
       <Layout>
-        <NaviPane>
-          <NaviBox appState={this.state} />
-        </NaviPane>
-        <PlayPane>
-          <PlayBox appState={this.state} onCardSelected={onCardSelected} />
-        </PlayPane>
-        <InfoPane>
-          <InfoBox appState={this.state} />
-        </InfoPane>
-        <ChatPane>
-          <ChatBox appState={this.state} />
-        </ChatPane>
+        <GameContext.Provider value={this.state}>
+          <NaviPane>
+            <NaviBox />
+          </NaviPane>
+          <PlayPane>
+            <PlayBox appState={this.state} onCardSelected={onCardSelected} />
+          </PlayPane>
+          <InfoPane>
+            <InfoBox appState={this.state} />
+          </InfoPane>
+          <ChatPane>
+            <ChatBox appState={this.state} />
+          </ChatPane>
+        </GameContext.Provider>
       </Layout>
     );
   }
