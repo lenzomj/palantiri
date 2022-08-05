@@ -73,18 +73,21 @@ Updates node dependencies for both client and server.
 #### `npm run server`
 Runs the Express server listening on the default port.
 
-#### 'npm run client`
+#### `npm run client`
 Runs the client app listening on the default port.
 
-#### 'npm run dev'
+#### `npm run dev`
 Concurrently runs both the server and client as a development pair.
 Open [http://localhost:3000](http://localhost:3000) to view it online.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-### 'npm run build'
+### `npm run build`
 Builds the client app for production to the `build` folder.
 Bundles React in production mode and optimizes the build for performance.
 
-### 'npm run test'
+### `npm run test`
 Launches the test runner in the interactive watch mode.
+
+### `npx prettier -w <file>`
+Runs prettier in-place against a source file.

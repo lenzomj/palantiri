@@ -1,80 +1,86 @@
-import React from 'react';
+import React from "react";
 import styled from "styled-components";
 
-import NaviBox from './components/NaviBox';
-import PlayBox from './components/PlayBox';
-import InfoBox from './components/InfoBox';
-import ChatBox from './components/ChatBox';
+import NaviBox from "./components/NaviBox";
+import PlayBox from "./components/PlayBox";
+import InfoBox from "./components/InfoBox";
+import ChatBox from "./components/ChatBox";
 
-import { registerOnMessageCallback, wsSendMessage } from './lib/WebSocket';
-import { GameState } from 'shared/game';
+import { registerOnMessageCallback, wsSendMessage } from "./lib/WebSocket";
+import { GameState } from "shared/game";
+import { GameContext } from "./components/GameContext";
 
 const keepAlive = (playerID, interval) => {
   wsSendMessage(playerID, "/ping keepalive");
-  setTimeout(() => { keepAlive(playerID, interval) }, interval);
+  setTimeout(() => {
+    keepAlive(playerID, interval);
+  }, interval);
 };
 
 export default class App extends React.Component {
-
-  constructor (props) {
-    super(props)
-    this.state = { playerID: undefined,
-                   playerName: "Observer",
-                   playerView: undefined,
-                   gameState: new GameState()
-                 };
+  constructor(props) {
+    super(props);
+    this.state = {
+      playerID: undefined,
+      playerName: "Observer",
+      playerView: undefined,
+      gameState: new GameState(),
+    };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     registerOnMessageCallback(this.onMessageReceived.bind(this));
   }
 
-  onCardSelected (event) {
+  onCardSelected(event) {
     this.setState({
-      playerView: event.target.src
+      playerView: event.target.src,
     });
   }
 
-  onMessageReceived (message) {
+  onMessageReceived(message) {
     message = JSON.parse(message);
     if (message.kind == "action") {
-      switch(message.head) {
+      switch (message.head) {
         case "playerid":
           console.log(`Received playerid ${message.body}`);
           this.setState({
-            playerID: message.body
+            playerID: message.body,
           });
           keepAlive(this.state.playerID, 30000);
           break;
         case "state":
           let newState = JSON.parse(message.body, GameState.Reviver);
-          let playerName = newState.players.get(this.state.playerID) || "Observer";
+          let playerName =
+            newState.players.get(this.state.playerID) || "Observer";
           this.setState({
             playerName: playerName,
-            gameState: newState
+            gameState: newState,
           });
           break;
       }
     }
   }
 
-  render () {
+  render() {
     const onCardSelected = this.onCardSelected.bind(this);
 
     return (
       <Layout>
-        <NaviPane>
-          <NaviBox appState={this.state} />
-        </NaviPane>
-        <PlayPane>
-          <PlayBox appState={this.state} onCardSelected={onCardSelected} />
-        </PlayPane>
-        <InfoPane>
-          <InfoBox appState={this.state} />
-        </InfoPane>
-        <ChatPane>
-          <ChatBox appState={this.state} />
-        </ChatPane>
+        <GameContext.Provider value={this.state}>
+          <NaviPane>
+            <NaviBox />
+          </NaviPane>
+          <PlayPane>
+            <PlayBox appState={this.state} onCardSelected={onCardSelected} />
+          </PlayPane>
+          <InfoPane>
+            <InfoBox appState={this.state} />
+          </InfoPane>
+          <ChatPane>
+            <ChatBox appState={this.state} />
+          </ChatPane>
+        </GameContext.Provider>
       </Layout>
     );
   }
@@ -96,12 +102,12 @@ const Layout = styled.div`
 
 const NaviPane = styled.div`
   grid-area: navi;
-  border-bottom: 1px solid rgba(255,255,255,0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
 `;
 
 const PlayPane = styled.div`
   grid-area: play;
-  border-right: 1px solid rgba(255,255,255,0.4);
+  border-right: 1px solid rgba(255, 255, 255, 0.4);
 `;
 
 const InfoPane = styled.div`

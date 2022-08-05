@@ -1,12 +1,12 @@
 {
   "name": "palantir",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "dependencies": {
     "express": "^4.17.2",
     "express-ws": "^5.0.2",
-    "uuid": "^8.3.2",
-    "shared": "file:./shared"
+    "shared": "file:./shared",
+    "uuid": "^8.3.2"
   },
   "scripts": {
     "postinstall": "cd client && npm install",
@@ -22,7 +22,8 @@
     "@babel/node": "^7.16.8",
     "@babel/preset-env": "^7.16.11",
     "concurrently": "^7.0.0",
-    "jest": "^27.4.7"
+    "jest": "^27.4.7",
+    "prettier": "2.7.1"
   },
   "engines": {
     "node": "16.x"

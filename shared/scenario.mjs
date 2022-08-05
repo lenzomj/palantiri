@@ -32,6 +32,11 @@ export const Scenario = {
   "The Seventh Level":        ["The Seventh Level",
                                "Plundering Goblins",
                                "Goblins of the Deep"],
+
+  "Flight from Moria":        ["Flight from Moria",
+                               "Hazards of the Pit",
+                               "Deeps of Moria",
+                               "Plundering Goblins"]
 };
 
 export const setupScenario = (game, scenario) => {
@@ -92,6 +97,10 @@ export const setupScenario = (game, scenario) => {
       game.reveal("Book of Mazarbul");
       game.display(0);
       game.flip("quest", 0);
+      break;
+    case "Flight from Moria":
+      game.quest("A Presence in the Dark");
+      game.reveal("The Nameless Fear");
       break;
     default:
       break;

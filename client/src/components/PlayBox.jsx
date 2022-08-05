@@ -1,103 +1,78 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import styled from "styled-components";
+
+import Card from "./Card";
 
 const imageServer = "https://palantiri.s3.amazonaws.com/images";
 
-const Attachments = (props) => {
-  const { cards } = props;
-  return (
-    <div>
-    {
-      cards.map((attachment, key) => {
-        return (
-          <Attachment src={`${imageServer}/${attachment.state.image}`}
-                      key={key}
-                      offset={key + 1}
-                      onClick={props.onClick}/>
-        );
-      })
-    }
-    </div>
-  );
-}
-
-const Display = (props) => {
-  const { cards } = props;
-  return (
-    <div>
-      <Card src={`${imageServer}/unselected_cardback.png`} />
-      {
-        cards.map((attachment, key) => {
-          return (
-            <DisplayItem src={`${imageServer}/${attachment.state.image}`}
-                        key={key}
-                        offset={key + 1}
-                        onClick={props.onClick}/>
-          );
-        })
-      }
-    </div>
-  );
-}
-
 export default class PlayBox extends Component {
-
-  constructor (props) {
+  constructor(props) {
     super(props);
   }
 
-  render () {
-    const {activeQuest, activeLocation,
-           stagingArea, engagementArea, displayArea } = this.props.appState.gameState;
+  render() {
+    const {
+      activeQuest,
+      activeLocation,
+      stagingArea,
+      engagementArea,
+      displayArea,
+    } = this.props.appState.gameState;
+
     return (
       <Layout>
         <StagingArea>
-          {
-            stagingArea.map((card, key) => {
-              return (
-                <CardBox key={key}>
-                <Card
-                      src={`${imageServer}/${card.state.image}`}
-                      onClick={this.props.onCardSelected} />
-                <Attachments cards={card.attachments}
-                             onClick={this.props.onCardSelected} />
-                </CardBox>
-              );
-            })
-          }
+          {stagingArea.map((card, key) => {
+            return (
+              <Card
+                key={key}
+                id={key}
+                card={card}
+                context="staged"
+                onSelect={this.props.onCardSelected}
+              />
+            );
+          })}
         </StagingArea>
         <QuestArea>
-          <CardBox>
-            <QuestCard src={`${imageServer}/${activeQuest?.state.image}`}
-                       onClick={this.props.onCardSelected} />
-          </CardBox>
-          <CardBox>
-            <Display cards={displayArea}
-                     onClick={this.props.onCardSelected} />
-
-          </CardBox>
+          <Card
+            card={activeQuest}
+            context="quest"
+            onSelect={this.props.onCardSelected}
+          />
         </QuestArea>
+        <DisplayArea>
+          {displayArea.map((card, key) => {
+            return (
+              <Card
+                key={key}
+                id={key}
+                card={card}
+                context="displayed"
+                onSelect={this.props.onCardSelected}
+              />
+            );
+          })}
+        </DisplayArea>
         <LocationArea>
-          <CardBox>
-            <Card src={`${imageServer}/${activeLocation?.state.image ?? "unselected_cardback.png"}`}
-                  onClick={this.props.onCardSelected} />
-          </CardBox>
+          <Card
+            card={activeLocation}
+            context="traveled"
+            onSelect={this.props.onCardSelected}
+          />
         </LocationArea>
         <EngagementArea>
-          {
-            engagementArea.map((card, key) => {
-              return (
-                <CardBox key={key}>
-                <Card
-                      src={`${imageServer}/${card.state.image}`}
-                      onClick={this.props.onCardSelected} />
-                <Attachments cards={card.attachments}
-                             onClick={this.props.onCardSelected} />
-
-                </CardBox>
-              );
-            })
-          }
+          {engagementArea.map((card, key) => {
+            return (
+              <Card
+                key={key}
+                id={key}
+                card={card}
+                context="engaged"
+                onSelect={this.props.onCardSelected}
+              />
+            );
+          })}
         </EngagementArea>
       </Layout>
     );
@@ -108,22 +83,24 @@ const Layout = styled.div`
   display: grid;
   width: 100%;
   grid-template-areas:
-    "staging quest  location"
-    "engage  engage engage";
+    "display quest location"
+    "staging staging staging"
+    "engage  engage  engage";
   grid-template-columns: 1fr 150px 150px;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
 `;
 
 const StagingArea = styled.div`
   grid-area: staging;
   display: flex;
   flex-wrap: wrap;
+  border-top: 1px dotted rgba(255, 255, 255, 0.4);
 `;
 
 const QuestArea = styled.div`
   grid-area: quest;
   display: block;
-  border-left: 1px dotted rgba(255,255,255,0.4);
+  border-left: 1px dotted rgba(255, 255, 255, 0.4);
   padding-left: 1rem;
 `;
 
@@ -132,81 +109,15 @@ const LocationArea = styled.div`
   display: flex;
 `;
 
+const DisplayArea = styled.div`
+  grid-area: display;
+  display: flex;
+  flex-wrap: wrap;
+`;
+
 const EngagementArea = styled.div`
   grid-area: engage;
   display: flex;
   flex-wrap: wrap;
-  border-top: 1px dotted rgba(255,255,255,0.4);
-`;
-
-const CardBox = styled.div`
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  width: auto;
-  height: auto;
-
-  position: relative;
-`;
-
-const Card = styled.img`
-  position: relative;
-  top: 0px;
-  left: 0px;
-  z-index: auto;
-  cursor: pointer;
-  width: 85px;
-  height: auto;
-
-  /* Disable Draggable Images */
-  -webkit-user-drag: none;
-  -khtml-user-drag: none;
-  -moz-user-drag: none;
-  -o-user-drag: none;
-  user-drag: none;
-
-  &:hover {
-    border: 1px solid white;
-    border-radius: 8px;
-    z-index: 999;
-  }
-`;
-
-const Attachment = styled.img`
-  position: absolute;
-  top: ${props => 25 * props.offset}px;
-  left: ${props => 15 * props.offset}px;
-  z-index: ${props => 1 * props.offset};
-  cursor: pointer;
-  width: 85px;
-  height: auto;
-
-  &:hover {
-    border: 1px solid white;
-    border-radius: 8px;
-    z-index: 999;
-  }
-`;
-
-const DisplayItem = styled.img`
-  position: absolute;
-  /*top: ${props => 25 * props.offset}px;*/
-  left: ${props => 15 * props.offset}px;
-  z-index: ${props => 1 * props.offset};
-  cursor: pointer;
-  width: 85px;
-  height: auto;
-
-  &:hover {
-    border: 1px solid white;
-    border-radius: 8px;
-    z-index: 999;
-  }
-`;
-
-const QuestCard = styled(Card)`
-  width: auto;
-  height: 75px;
+  border-top: 1px dotted rgba(255, 255, 255, 0.4);
 `;

@@ -4,6 +4,8 @@ import styled from "styled-components";
 import Console from './Console';
 import { wsSendMessage } from '../lib/WebSocket';
 
+import { GameContext } from './GameContext';
+
 export default class NaviBox extends Component {
 
   constructor (props) {
@@ -11,7 +13,7 @@ export default class NaviBox extends Component {
   }
 
   sendMessage (text) {
-    wsSendMessage(this.props.appState.playerID, text);
+    wsSendMessage(this.context.playerID, text);
   }
 
   render () {
@@ -19,15 +21,17 @@ export default class NaviBox extends Component {
 
     return (
       <Layout>
-        <FirstItem><p>Palantir v0.2.1</p></FirstItem>
-        <Item><p>Players: {this.props.appState.gameState.players.size || 0}</p></Item>
-        <Item><p>{this.props.appState.playerName}</p></Item>
-        <Item><p>Scenario: {this.props.appState.gameState.scenario ?? "Not Selected"}</p></Item>
+        <FirstItem><p>Palantir v0.3.0</p></FirstItem>
+        <Item><p>Players: {this.context.gameState.players.size || 0}</p></Item>
+        <Item><p>{this.context.playerName}</p></Item>
+        <Item><p>Scenario: {this.context.gameState.scenario ?? "Not Selected"}</p></Item>
         <LastItem><Console onSend={sendMessage} /> </LastItem>
       </Layout>
     );
   }
 }
+
+NaviBox.contextType = GameContext;
 
 /* Component Style */
 
