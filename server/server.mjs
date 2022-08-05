@@ -54,6 +54,10 @@ const wsHandler = (ws) => {
           game.display(call.body);
           stateChanged = true;
           break;
+        case "stage":
+          game.stage(call.body);
+          stateChanged = true;
+          break;
         case "hide":
           game.hide(call.body);
           stateChanged = true;

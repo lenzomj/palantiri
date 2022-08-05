@@ -91,6 +91,14 @@ export default class Game {
     }
   }
 
+  stage(displayIndex) {
+    let displayed = this.state.displayArea[displayIndex];
+    if (displayed) {
+      this.state.displayArea.splice(displayIndex, 1);
+      this.state.stagingArea.push(displayed);
+    }
+  }
+
   hide(displayIndex) {
     let displayed = this.state.displayArea[displayIndex];
     if (displayed) {

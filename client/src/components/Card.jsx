@@ -113,6 +113,7 @@ export default class Card extends Component {
           <React.Fragment>
             <MenuItem value={`/flip ${id} display`}>Flip</MenuItem>
             <MenuItem value={`/hide ${id}`}>Hide</MenuItem>
+            <MenuItem value={`/stage ${id}`}>Stage</MenuItem>
           </React.Fragment>
         );
       default:
