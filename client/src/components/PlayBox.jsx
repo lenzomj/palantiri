@@ -40,7 +40,8 @@ export default class PlayBox extends Component {
             context="quest"
             onSelect={this.props.onCardSelected}
           />
-          <Card context="placeholder" />
+        </QuestArea>
+        <DisplayArea>
           {displayArea.map((card, key) => {
             return (
               <Card
@@ -52,7 +53,7 @@ export default class PlayBox extends Component {
               />
             );
           })}
-        </QuestArea>
+        </DisplayArea>
         <LocationArea>
           <Card
             card={activeLocation}
@@ -82,16 +83,18 @@ const Layout = styled.div`
   display: grid;
   width: 100%;
   grid-template-areas:
-    "staging quest  location"
-    "engage  engage engage";
+    "display quest location"
+    "staging staging staging"
+    "engage  engage  engage";
   grid-template-columns: 1fr 150px 150px;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
 `;
 
 const StagingArea = styled.div`
   grid-area: staging;
   display: flex;
   flex-wrap: wrap;
+  border-top: 1px dotted rgba(255, 255, 255, 0.4);
 `;
 
 const QuestArea = styled.div`
@@ -104,6 +107,12 @@ const QuestArea = styled.div`
 const LocationArea = styled.div`
   grid-area: location;
   display: flex;
+`;
+
+const DisplayArea = styled.div`
+  grid-area: display;
+  display: flex;
+  flex-wrap: wrap;
 `;
 
 const EngagementArea = styled.div`

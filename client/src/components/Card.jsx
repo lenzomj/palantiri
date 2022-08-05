@@ -53,26 +53,6 @@ export default class Card extends Component {
             </Menu>
           </React.Fragment>
         );
-      case "displayed":
-        return (
-          <React.Fragment>
-            <Menu
-              menuButton={
-                <DisplayItem
-                  src={`${imageServer}/${
-                    card?.state.image ?? "unselected_cardback.png"
-                  }`}
-                  offset={id + 1}
-                  onClick={onSelect}
-                />
-              }
-              arrow
-              onItemClick={(e) => wsSendMessage(this.context.playerID, e.value)}
-            >
-              {this.renderMenuOptions(id, context)}
-            </Menu>
-          </React.Fragment>
-        );
       default:
         return (
           <React.Fragment>
@@ -179,12 +159,6 @@ const CardFace = styled.img`
   -moz-user-drag: none;
   -o-user-drag: none;
   user-drag: none;
-
-  &:hover {
-    border: 1px solid white;
-    border-radius: 8px;
-    z-index: 999;
-  }
 `;
 
 const TappedCardFace = styled(CardFace)`
@@ -200,26 +174,12 @@ const Attachment = styled.img`
   cursor: pointer;
   width: 85px;
   height: auto;
+`;
 
-  &:hover {
+/*
+ &:hover {
     border: 1px solid white;
     border-radius: 8px;
     z-index: 999;
   }
-`;
-
-const DisplayItem = styled.img`
-  position: absolute;
-  /*top: ${(props) => 25 * props.offset}px;*/
-  left: ${(props) => 15 * props.offset}px;
-  z-index: ${(props) => 1 * props.offset};
-  cursor: pointer;
-  width: 85px;
-  height: auto;
-
-  &:hover {
-    border: 1px solid white;
-    border-radius: 8px;
-    z-index: 999;
-  }
-`;
+*/
