@@ -40,11 +40,25 @@ export default class Library {
     return reduced;
   }
 
+  getQuestByName(name) {
+    let card;
+    this.records.forEach((record, recordID) => {
+      if (record.sides.A.name.toLowerCase() === name.toLowerCase()) {
+        if (record.sides.A.type === "Quest") {
+          card = new Card(record);
+        }
+      }
+    });
+    return card;
+  }
+
   getCardByName(name) {
     let card;
     this.records.forEach((record, recordID) => {
       if (record.sides.A.name.toLowerCase() === name.toLowerCase()) {
-        card = new Card(record);
+        if (record.sides.A.type != "Quest") {
+          card = new Card(record);
+        }
       }
     });
     return card;

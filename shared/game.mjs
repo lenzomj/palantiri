@@ -129,7 +129,7 @@ export default class Game {
   }
 
   quest(cardName) {
-    let found = this.encounterDeck.getCardByName(cardName);
+    let found = this.encounterDeck.getQuestByName(cardName);
     if (found) {
       this.state.activeQuest = found;
     }
