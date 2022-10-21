@@ -36,7 +36,11 @@ export const Scenario = {
   "Flight from Moria":        ["Flight from Moria",
                                "Hazards of the Pit",
                                "Deeps of Moria",
-                               "Plundering Goblins"]
+                               "Plundering Goblins"],
+
+  "Peril in Pelargir":        ["Peril in Pelargir",
+                               "Streets of Gondor",
+                               "Brigands"]
 };
 
 export const setupScenario = (game, scenario) => {
@@ -101,6 +105,13 @@ export const setupScenario = (game, scenario) => {
     case "Flight from Moria":
       game.quest("A Presence in the Dark");
       game.reveal("The Nameless Fear");
+      break;
+    case "Peril in Pelargir":
+      game.quest("The Leaping Fish");
+      game.reveal("The Leaping Fish");
+      game.travel(0);
+      game.reveal("Alcaron's Scroll");
+      game.display(0);
       break;
     default:
       break;
