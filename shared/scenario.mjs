@@ -40,7 +40,12 @@ export const Scenario = {
 
   "Peril in Pelargir":        ["Peril in Pelargir",
                                "Streets of Gondor",
-                               "Brigands"]
+                               "Brigands"],
+
+  "Into Ithilien":            ["Into Ithilien",
+                               "Brooding Forest",
+                               "Creatures of the Forest",
+                               "Southrons"]
 };
 
 export const setupScenario = (game, scenario) => {
@@ -113,6 +118,13 @@ export const setupScenario = (game, scenario) => {
       game.reveal("Alcaron's Scroll");
       game.display(0);
       break;
+    case "Into Ithilien":
+      game.quest("Ambush in Ithilien");
+      game.reveal("Celador");
+      game.reveal("Ithilien Road");
+      game.travel(1);
+      game.reveal("Southron Company");
+      game.reveal("Southron Company");
     default:
       break;
   }
