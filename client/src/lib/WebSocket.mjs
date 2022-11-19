@@ -1,17 +1,20 @@
 import { MessageTemplate } from 'shared/Message.mjs';
 
-// The server host is determined based on the mode
-// If the app is running in development mode (using npm start)
-// then we set the host to "localhost:8080"
-// If the app is in production mode (using npm run build)
-// then the host is the current browser host
-const host = process.env.NODE_ENV === 'production' ? window.location.host : 'localhost:5000'
-
 let send
 let onMessageCallbacks = [ ];
 
 export const startWebsocketConnection = () => {
-  const ws = new window.WebSocket('ws://' + host + '/chat') || {}
+  var serverUrl;
+  var scheme = 'ws';
+  var location = document.location;
+
+  if (location.protocol === 'https:') {
+    scheme += 's'; //wss:
+  }
+
+  serverUrl = `${scheme}://${location.hostname}:${location.port}/chat`;
+
+  const ws = new window.WebSocket(serverUrl) || {}
 
   ws.onopen = () => {
     console.log('opened ws connection')

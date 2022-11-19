@@ -169,4 +169,4 @@ app.ws('/chat', wsHandler);
  */
 app.listen(WSPORT);
 app.use(Express.static(path.resolve(__dirname, '../client/build')));
-console.log(`Listening on port ${WSPORT}`);
+console.log(`Server listening on port ${WSPORT}`);
